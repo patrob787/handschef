@@ -8,7 +8,7 @@ from config import db
 # Models go here!
 
 #Users table
-class User(db, SerializerMixin):
+class User(db.Model, SerializerMixin):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -28,7 +28,7 @@ class User(db, SerializerMixin):
         return f"<Employee: {self.emp_code}, Name: {self.first_name} {self.last_name}>"
 
 # Menu items
-class Item(db, SerializerMixin):
+class Item(db.Model, SerializerMixin):
     __tablename__ = "items"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -51,7 +51,7 @@ class Item(db, SerializerMixin):
     def __repr__(self):
         return f"<Item: {self.name}, Price: {self.price}, Category: {self.category}>"
 
-class SubItem(db, SerializerMixin):
+class SubItem(db.Model, SerializerMixin):
     __tablename__ = "sub_items"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -76,7 +76,7 @@ class SubItem(db, SerializerMixin):
 
 
 # Relationship Tables
-class Check(db, SerializerMixin):
+class Check(db.Model, SerializerMixin):
     __tablename__ = "checks"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -96,7 +96,7 @@ class Check(db, SerializerMixin):
     def __repr__(self):
         return f"<Check #: {self.id}, Server: {self.user_id}, Total: {self.total}, Table: {self.table_number}>"
 
-class Order(db, SerializerMixin):
+class Order(db.Model, SerializerMixin):
     __tablename__ = "orders"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -115,7 +115,7 @@ class Order(db, SerializerMixin):
     def __repr__(self):
         return f"<Order #: {self.id}, Check #: {self.check_id}, Item: {self.item_id}>"
 
-class Modifier(db, SerializerMixin):
+class Modifier(db.Model, SerializerMixin):
     __tablename__ = "modifiers"
 
     id = db.Column(db.Integer, primary_key=True)
