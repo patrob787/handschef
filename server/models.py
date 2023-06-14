@@ -20,6 +20,10 @@ class User(db, SerializerMixin):
     job_code = db.Column(db.Integer, nullable=False)
     start_date = db.Column(db.DateTime, server_default=db.func.now())
 
+    checks = db.relationship("Check", backref="user")
+
+    serialize_rules = ("-checks.user",)
+
     def __repr__(self):
         return f"<Employee: {self.emp_code}, Name: {self.first_name} {self.last_name}>"
 
@@ -40,6 +44,10 @@ class Item(db, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+    orders = db.relationship("Order", backref="item")
+
+    serialize_rules = ("-orders.item",)
+
     def __repr__(self):
         return f"<Item: {self.name}, Price: {self.price}, Category: {self.category}>"
 
@@ -58,6 +66,10 @@ class SubItem(db, SerializerMixin):
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    modifiers = db.relationship("Modifier", backref="sub_item")
+
+    serialize_rules = ("-modifiers.sub_item",)
     
     def __repr__(self):
         return f"<Sub-Item: {self.name}, Price: {self.price}, Category: {self.category}>"    
@@ -77,6 +89,10 @@ class Check(db, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+    orders = db.relationship("Order", backref="check")
+
+    serialize_rules = ("-user.checks", "-orders.check")
+
     def __repr__(self):
         return f"<Check #: {self.id}, Server: {self.user_id}, Total: {self.total}, Table: {self.table_number}>"
 
@@ -92,6 +108,10 @@ class Order(db, SerializerMixin):
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
+    modifiers = db.relationship("Modifier", backref="order")
+
+    serialize_rules = ("-item.orders", "-check.orders", "-modifiers.order")
+
     def __repr__(self):
         return f"<Order #: {self.id}, Check #: {self.check_id}, Item: {self.item_id}>"
 
@@ -105,6 +125,8 @@ class Modifier(db, SerializerMixin):
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    serialize_rules = ("-order.modifiers", "-sub_item.modifiers")
 
     def __repr__(self):
         return f"<Modifier {self.sub_item_id} for order {self.order_id}>"
