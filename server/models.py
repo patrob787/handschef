@@ -29,7 +29,7 @@ class Item(db, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     image = db.Column(db.String)
-    price = db.Column(db.Float)
+    price = db.Column(db.Float, default=0)
     temperature = db.Column(db.Boolean, default=False)
     category = db.Column(db.String, nullable=False)
     menu = db.Column(db.String, nullable=False)
@@ -45,14 +45,37 @@ class Item(db, SerializerMixin):
 class SubItem(db, SerializerMixin):
     __tablename__ = "sub_items"
 
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    image = db.Column(db.String)
+    price = db.Column(db.Float, default=0)
+    temperature = db.Column(db.Boolean, default=False)
+    category = db.Column(db.String, nullable=False)
+    menu = db.Column(db.String, nullable=False)
+    stocked = db.Column(db.Boolean, default=True)
+    # allergies = db.Column(db.String)
+
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+    
     def __repr__(self):
-        pass    
+        return f"<Sub-Item: {self.name}, Price: {self.price}, Category: {self.category}>"    
 
 class Check(db, SerializerMixin):
     __tablename__ = "checks"
 
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    table_number = db.Column(db.Integer, default=999)
+    total = db.Column(db.Float, default=0)
+    tax = db.Column(db.Float, default=0)
+    paid = db.Column(db.Boolean, default=False)
+
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
     def __repr__(self):
-        pass
+        return f"<Check #: {self.id}, Server: {self.user_id}, Total: {self.total}, Table: {self.table_number}>"
 
 class Order(db, SerializerMixin):
     __tablename__ = "orders"
