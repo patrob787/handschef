@@ -98,5 +98,13 @@ class Order(db, SerializerMixin):
 class Modifier(db, SerializerMixin):
     __tablename__ = "modifiers"
 
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
+    sub_item_id = db.Column(db.Integer, db.ForeignKey("sub_items.id"))
+    message = db.Column(db.String)
+
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
     def __repr__(self):
-        pass
+        return f"<Modifier {self.sub_item_id} for order {self.order_id}>"
