@@ -23,6 +23,7 @@ class User(db, SerializerMixin):
     def __repr__(self):
         return f"<Employee: {self.emp_code}, Name: {self.first_name} {self.last_name}>"
 
+# Menu items
 class Item(db, SerializerMixin):
     __tablename__ = "items"
 
@@ -61,6 +62,8 @@ class SubItem(db, SerializerMixin):
     def __repr__(self):
         return f"<Sub-Item: {self.name}, Price: {self.price}, Category: {self.category}>"    
 
+
+# Relationship Tables
 class Check(db, SerializerMixin):
     __tablename__ = "checks"
 
@@ -80,8 +83,17 @@ class Check(db, SerializerMixin):
 class Order(db, SerializerMixin):
     __tablename__ = "orders"
 
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+    check_id = db.Column(db.Integer, db.ForeignKey("checks.id"))
+    seat_number = db.Column(db.Integer)
+    message = db.Column(db.String)
+
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
     def __repr__(self):
-        pass
+        return f"<Order #: {self.id}, Check #: {self.check_id}, Item: {self.item_id}>"
 
 class Modifier(db, SerializerMixin):
     __tablename__ = "modifiers"
