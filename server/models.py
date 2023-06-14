@@ -26,8 +26,27 @@ class User(db, SerializerMixin):
 class Item(db, SerializerMixin):
     __tablename__ = "items"
 
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    image = db.Column(db.String)
+    price = db.Column(db.Float)
+    temperature = db.Column(db.Boolean, default=False)
+    category = db.Column(db.String, nullable=False)
+    menu = db.Column(db.String, nullable=False)
+    count = db.Column(db.Integer)
+    # allergies = db.Column(db.String)
+
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
     def __repr__(self):
-        pass
+        return f"<Item: {self.name}, Price: {self.price}, Category: {self.category}>"
+
+class SubItem(db, SerializerMixin):
+    __tablename__ = "sub_items"
+
+    def __repr__(self):
+        pass    
 
 class Check(db, SerializerMixin):
     __tablename__ = "checks"
@@ -37,6 +56,12 @@ class Check(db, SerializerMixin):
 
 class Order(db, SerializerMixin):
     __tablename__ = "orders"
+
+    def __repr__(self):
+        pass
+
+class Modifier(db, SerializerMixin):
+    __tablename__ = "modifiers"
 
     def __repr__(self):
         pass
