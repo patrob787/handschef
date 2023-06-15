@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Nav from "./Nav"
 import Home from "./Home"
 import Header from "./Header"
+import Error from "./Error"
 
 function App() {
   // Code goes here!
@@ -11,7 +12,10 @@ function App() {
       <h1>Welcome to HandsChef!</h1>
       <Nav />
       <Header />
-      <Home />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
     </div>
 )}
 
