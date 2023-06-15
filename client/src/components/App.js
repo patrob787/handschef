@@ -9,13 +9,15 @@ function App() {
   // Code goes here!
   return (
     <div>
-      <h1>Welcome to HandsChef!</h1>
+
       <Nav />
       <Header />
+      
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="*" element={<Error />} />
       </Routes>
+
     </div>
 )}
 
