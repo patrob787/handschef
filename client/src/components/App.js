@@ -1,8 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import Nav from "./Nav"
+import Home from "./Home"
+import Header from "./Header"
+import Error from "./Error"
 
 function App() {
   // Code goes here!
-}
+  return (
+    <div>
+
+      <Nav />
+      <Header />
+      
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<Error />} />
+      </Routes>
+
+    </div>
+)}
 
 export default App;

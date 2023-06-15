@@ -33,12 +33,13 @@ class Item(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    pos_name = db.Column(db.String, nullable=False)
     image = db.Column(db.String)
     price = db.Column(db.Float, default=0)
     temperature = db.Column(db.Boolean, default=False)
     category = db.Column(db.String, nullable=False)
     menu = db.Column(db.String, nullable=False)
-    count = db.Column(db.Integer)
+    count = db.Column(db.Integer, default=50)
     # allergies = db.Column(db.String)
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())
@@ -56,7 +57,7 @@ class SubItem(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    image = db.Column(db.String)
+    pos_name = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, default=0)
     temperature = db.Column(db.Boolean, default=False)
     category = db.Column(db.String, nullable=False)
