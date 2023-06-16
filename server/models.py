@@ -61,6 +61,7 @@ class SubItem(db.Model, SerializerMixin):
     button_name = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, default=0)
     category = db.Column(db.String, nullable=False)
+    menu_cat = db.Column(db.String, default="None")
     stocked = db.Column(db.Boolean, default=True)
     # allergies = db.Column(db.String)
 
