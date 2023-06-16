@@ -8,10 +8,11 @@ from faker import Faker
 
 # Local imports
 from app import app
-from models import db, User, Item, SubItem, Check, Order, Modifier
+from models import db, User, Item, SubItem, Check, Order, Modifier, ItemMod
 
 menu_items = []
 sub_items = []
+item_mods = []
 
 def make_item(name, button, image, price, temperature, category, menu):
     item = Item(
@@ -36,6 +37,20 @@ def make_subitem(name, button, price, category, menu_cat):
     )
 
     sub_items.append(subitem)
+
+def make_item_mod(name, mods):
+    item = Item.query.filter_by(button_name=name).first()
+    
+    for mod in mods:
+        mod_obj = SubItem.query.filter(SubItem.name == mod).first()
+        
+        item_mod = ItemMod(
+            item_id = item.id,
+            sub_id = mod_obj.id
+        )
+    
+        item_mods.append(item_mod)
+
 
 if __name__ == '__main__':
     fake = Faker()
@@ -143,13 +158,14 @@ if __name__ == '__main__':
 
         # Sub Items
         
-        make_subitem("Avocado Add", "Avocado", 4, "add On", "None")
-        make_subitem("Grilled Chicken", "Chicken", 9, "add On", "salads")
-        make_subitem("Lobster", "Lobster", 24, "add On", "salads")
-        make_subitem("Prosciutto", "Salmon", 18, "add On", "salads")
-        make_subitem("Chilled Shrimp", "Shrimp", 13, "add On", "salads")
-        make_subitem("Smoked Salmon", "Smoked Sal", 20, "add On", "None")
-        make_subitem("Soft Boiled Egg", "SB Egg", 3, "add On", "mornings")
+        make_subitem("Avocado Add", "Avocado", 4, "add on", "None")
+        make_subitem("Bacon Add", "Bacon", 5, "add on", "None")
+        make_subitem("Grilled Chicken", "Chicken", 9, "add on", "salads")
+        make_subitem("Lobster", "Lobster", 24, "add on", "salads")
+        make_subitem("Prosciutto", "Salmon", 18, "add on", "salads")
+        make_subitem("Chilled Shrimp", "Shrimp", 13, "add on", "salads")
+        make_subitem("Smoked Salmon", "Smoked Sal", 20, "add on", "None")
+        make_subitem("Soft Boiled Egg", "SB Egg", 3, "add on", "mornings")
         make_subitem("Add Espresso Shot", "Add Shot", 4, "beverages", "coffee/tea")
         make_subitem("Almond Milk", "Almond mlk", 1, "beverages", "coffee/tea")
         make_subitem("Caramel Syrup", "Caramel", 1, "beverages", "coffee/tea")
@@ -169,6 +185,7 @@ if __name__ == '__main__':
         make_subitem("Burger Bun", "Bun", 0, "bread", "None")
         make_subitem("Sourdough Toast", "Toast", 0, "bread", "sides")
         make_subitem("Cheddar", "Cheddar", 0, "cheese", "None")
+        make_subitem("Cheese", "Cheese", 0, "cheese", "None")
         make_subitem("Swiss", "Swiss", 0, "cheese", "None")
         make_subitem("Feta", "Feta", 0, "cheese/salad", "salads")
         make_subitem("Grated Parm", "Parm grated", 0, "cheese/salad", "salads")
@@ -225,7 +242,7 @@ if __name__ == '__main__':
         make_subitem("Pepper", "Pepper", 0, "ingredient", "None")
         make_subitem("Roasted Peppers", "Rst Peppers", 0, "ingredient", "None")
         make_subitem("Pickled Red Onion", "Pickled Onion", 0, "ingredient", "None")
-        make_subitem("Potatos Puree", "Puree", 0, "ingredient", "None")
+        make_subitem("Potato Puree", "Puree", 0, "ingredient", "None")
         make_subitem("Raddish", "Raddish", 0, "ingredient", "None")
         make_subitem("Salt", "Salt", 0, "ingredient", "None")
         make_subitem("Seasoning", "Seasoning", 0, "ingredient", "None")
@@ -235,7 +252,9 @@ if __name__ == '__main__':
         make_subitem("Tomato", "Tomato", 0, "ingredient", "None")
         make_subitem("Truffle", "Truffle", 0, "ingredient", "None")
         make_subitem("Pickle", "Pickle", 0, "ingredient", "None")
+        make_subitem("Candle", "Candle", 0, "modifier", "sweets")
         make_subitem("Chopped", "Chopped", 0, "modifier", "salads")
+        make_subitem("Condiments", "Condiments", 0, "modifier", "None")
         make_subitem("Crispy", "Crispy", 0, "modifier", "None")
         make_subitem("Dressing", "Dressing", 0, "modifier", "salads")
         make_subitem("Plain", "Plain", 0, "modifier", "None")
@@ -246,6 +265,96 @@ if __name__ == '__main__':
         make_subitem("Well Done", "Well", 0, "temperature", "None")
         
         db.session.add_all(sub_items)
+        db.session.commit()
+
+        # Item Mods
+
+        scramble = ["Chives", "Creme Fraiche", "Butter", "Sourdough Toast", "Avocado", "Well Done"]
+        make_item_mod("Scramble", scramble)
+        
+        bacon = ["Maple Glaze", "Pepper", "Crispy"]
+        make_item_mod("Bacon", bacon)
+        
+        lox = ["Capers", "Sourdough Toast", "Pickled Red Onion", "Cream Cheese", "Herbs"]
+        make_item_mod("Lox", lox)
+
+        avo_toast = ["Balsamic Glaze", "Soft Boiled Egg", "Pickled Red Onion"]
+        make_item_mod("Avocado Toast", avo_toast)
+
+        prodel = ["Grapes", "Baguette", "Cheese", "Butter", "Jam", "Pepper"]
+        make_item_mod("Prosciutto", prodel)
+        make_item_mod("Delice", prodel)
+        make_item_mod("Combo Board", prodel)
+
+        shrimp = ["Lemon", "Cocktail Sauce", "Dijonnaise"]
+        make_item_mod("Shrimp Cocktail", shrimp)
+
+        chokes = ["Rosemary", "Rosemary Aioli", "Crispy"]
+        make_item_mod("Artichokes", chokes)
+
+        burrata = ["Balsamic Vinegar", "Roasted Peppers", "Parsley", "Sourdough Toast", "Salt", "Pepper"]
+        make_item_mod("Burrata", burrata)
+
+        gem = ["Avocado", "Feta", "Raddish", "Shallot", "Dressing"]
+        make_item_mod("Gem", gem)
+
+        arugula = ["Fennel", "Grapes", "Sunflower Seeds", "Shaved Parm", "Shallot", "Dressing"]
+        make_item_mod("Arugula", arugula)
+
+        veg = ["Pecans", "Raddish", "Beets", "Carrots", "Dressing"]
+        make_item_mod("Shaved Veg", veg)
+        
+        caesar = ["Grated Parm", "Croutons", "Dressing"]
+        make_item_mod("Caesar", caesar)
+
+        burger = ["Cheese", "Plain", "Onion", "Pickle", "Dijonnaise", "Lettuce", "Tomato", "Burger Bun", "Avocado Add", "Bacon Add", "Condiments"]
+        make_item_mod("RH Burger", burger)
+        
+        ribeye = ["Swiss", "Au Jus", "Cherry Pepper", "Baguette"]
+        make_item_mod("Shaved Ribeye", ribeye)
+        
+        grcheese = ["Bacon Add", "Avocado Add", "Cherry Pepper", "Truffle"]
+        make_item_mod("Grilled Cheese", grcheese)
+
+        roll = ["Old Bay Seasoning", "Chives", "Mayonnaise", "Drawn Butter"]
+        make_item_mod("Lobster Roll", roll)
+        
+        salmon = ["Lemon", "Honey", "Brown Butter", "Pepper", "Plain"]
+        make_item_mod("Salmon", salmon)
+        
+        roti = ["Seasoning", "Potato Puree", "Garlic Confit"]
+        make_item_mod("Roti", roti)
+        
+        steak = ["Seasoning", "Butter"]
+        make_item_mod("Ribeye Steak", steak)
+        
+        ff = ["Ketchup", "Garlic Aioli", "Crispy"]
+        make_item_mod("Fries", ff)
+        
+        tff = ["Shaved Parm", "Parsley", "Truffle", "Truffle Aioli"]
+        make_item_mod("Truff Fries", tff)
+        simple = ["Dressing", "Shallot", "Raddish"]
+        make_item_mod("Simple Salad", simple)
+        
+        puree = ["Chive Butter"]
+        make_item_mod("Puree", puree)
+
+        broc = ["Chili Paste", "Lemon Zest", "Garlic Confit", "Plain"]
+        make_item_mod("Broccolini", broc)
+
+        mush = ["Garlic", "Thyme", "Plain", "Butter", "Chives"]
+        make_item_mod("Mushrooms", mush)
+
+        cookies = ["Salt", "Candle"]
+        make_item_mod("Cookies", cookies)
+        
+        gelato = ["Candle"]
+        make_item_mod("Van Gelato", gelato)
+        make_item_mod("Choc Gelato", gelato)
+        make_item_mod("Carm Gelato", gelato)
+        make_item_mod("Rasp Sorb", gelato)
+
+        db.session.add_all(item_mods)
         db.session.commit()
 
         # Fake User Data
