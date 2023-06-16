@@ -13,10 +13,10 @@ from models import db, User, Item, SubItem, Check, Order, Modifier
 menu_items = []
 sub_items = []
 
-def make_item(name, pos_name, image, price, temperature, category, menu):
+def make_item(name, button, image, price, temperature, category, menu):
     item = Item(
         name = name,
-        pos_name = pos_name,
+        button_name = button,
         image = image,
         price = price,
         temperature = temperature,
@@ -26,8 +26,15 @@ def make_item(name, pos_name, image, price, temperature, category, menu):
 
     menu_items.append(item)
 
-def make_subitem():
-    pass
+def make_subitem(name, button, price, category):
+    subitem = SubItem(
+        name = name,
+        button_name = button,
+        price = price,
+        category = category
+    )
+
+    sub_items.append(subitem)
 
 if __name__ == '__main__':
     fake = Faker()
@@ -42,7 +49,7 @@ if __name__ == '__main__':
         Check.query.delete()
         Modifier.query.delete()
 
-        #Brunch
+        # #Brunch
         make_item("RH Scramble", "Scramble", "https://fastly.4sqi.net/img/general/600x600/9052728_546egmQpd26GnE6eT6nvBDoV1WoCt-CFK-S_lrXmF1A.jpg", 22, True, "mornings", "brunch")
         make_item("Thick Cut Pork Belly Bacon", "Bacon", "https://s3-media0.fl.yelpcdn.com/bphoto/qllR4aV8wUaVkx3QElSHUQ/258s.jpg", 14, False, "mornings", "brunch")
         make_item("New York Lox", "Lox", "https://images.otstatic.com/prod1/30615159/3/large.jpg", 28, False, "mornings", "brunch")
@@ -53,7 +60,7 @@ if __name__ == '__main__':
         make_item("Delice De Bourgogne Cheese", "Delice", "https://dmn-dallas-news-prod.cdn.arcpublishing.com/resizer/BJXtuXOglLqoTztrgta_568Bk8g=/fit-in/1660x934/smart/filters:no_upscale()/cloudfront-us-east-1.images.arcpublishing.com/dmn/MQMLWPIM3BFKRCTHNG7M44O3DA.JPG", 21, False, "appetizers", "all")
         make_item("Prosciutto and Delice Board", "Combo Board", "https://cloudfront-us-east-1.images.arcpublishing.com/dmn/BO6BZQEIKBCATFEFF47GCGPU6Y.jpg", 45,  False, "appetizers", "all")
         make_item("Shrimp Cocktail", "Shrimp Cocktail", "https://www.gannett-cdn.com/authoring/2019/09/11/NPPP/ghows_image-LK-a78bcbc7-19f7-452a-8e70-a02b7f562007.jpeg", 25, False, "appetizers", "all")
-        make_item("Crisp Artichokes", "Artichokes", "https://images.squarespace-cdn.com/content/v1/594a8fc04f14bcf90f3a113d/1605190704638-Y3HYK6FES88NPGHPY6AI/DSC04026.jpg", 21, False, "appetizers", "all")
+        make_item("Crispy Artichokes", "Artichokes", "https://images.squarespace-cdn.com/content/v1/594a8fc04f14bcf90f3a113d/1605190704638-Y3HYK6FES88NPGHPY6AI/DSC04026.jpg", 21, False, "appetizers", "all")
         make_item("Burrata", "Burrata", "https://www.papercitymag.com/wp-content/uploads/2021/05/RH_Food_1.jpg", 25, False, "appetizers", "all")
 
         #Salads
@@ -130,6 +137,7 @@ if __name__ == '__main__':
 
 
         # Sub Items
+        
 
 
         # Fake User Data

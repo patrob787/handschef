@@ -33,7 +33,7 @@ class Item(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    pos_name = db.Column(db.String, nullable=False)
+    button_name = db.Column(db.String, nullable=False)
     image = db.Column(db.String)
     price = db.Column(db.Float, default=0)
     temperature = db.Column(db.Boolean, default=False)
@@ -46,8 +46,9 @@ class Item(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     orders = db.relationship("Order", backref="item")
+    item_mods = db.relationship("ItemMod", backref="item")
 
-    serialize_rules = ("-orders.item",)
+    serialize_rules = ("-orders.item", "-item_mods.item")
 
     def __repr__(self):
         return f"<Item: {self.name}, Price: {self.price}, Category: {self.category}>"
@@ -57,11 +58,9 @@ class SubItem(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    pos_name = db.Column(db.String, nullable=False)
+    button_name = db.Column(db.String, nullable=False)
     price = db.Column(db.Float, default=0)
-    temperature = db.Column(db.Boolean, default=False)
     category = db.Column(db.String, nullable=False)
-    menu = db.Column(db.String, nullable=False)
     stocked = db.Column(db.Boolean, default=True)
     # allergies = db.Column(db.String)
 
@@ -69,8 +68,9 @@ class SubItem(db.Model, SerializerMixin):
     updated_at = db.Column(db.DateTime, onupdate=db.func.now())
 
     modifiers = db.relationship("Modifier", backref="sub_item")
+    item_mods = db.relationship("ItemMod", backref="sub_item")
 
-    serialize_rules = ("-modifiers.sub_item",)
+    serialize_rules = ("-modifiers.sub_item", "-item_mods.sub_item")
     
     def __repr__(self):
         return f"<Sub-Item: {self.name}, Price: {self.price}, Category: {self.category}>"    
@@ -131,3 +131,18 @@ class Modifier(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f"<Modifier {self.sub_item_id} for order {self.order_id}>"
+    
+class ItemMod(db.Model, SerializerMixin):
+    __tablename__ = "item_mods"
+
+    id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
+    sub_id = db.Column(db.Integer, db.ForeignKey("sub_items.id"))
+
+    created_at = db.Column(db.DateTime, server_default=db.func.now())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.now())
+
+    serialize_rules = ("-item.item_mods", "-sub_item.item_mods")
+    
+    def __repr__(self):
+        return f"<Item: {self.item_id}, Mod: {self.sub_id}>"
