@@ -29,6 +29,7 @@ class Users(Resource):
                 last_name = request.form['last_name'],
                 avatar = request.form['avatar'],
                 admin = request.form['admin'],
+                emp_code = request.form['emp_code']
             )
 
             db.session.add(new_user)
@@ -76,6 +77,20 @@ class UserById(Resource):
             return {"error": "404 User not found"}, 404
         
 api.add_resource(UserById, '/users/<int:id>')
+
+# Authentication Routes
+class SignUp(Resource):
+    pass
+
+class CheckSession(Resource):
+    pass
+
+class Login(Resource):
+    pass
+
+class Logout(Resource):
+    pass
+    
 
 
 if __name__ == '__main__':
