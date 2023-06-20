@@ -116,7 +116,7 @@ class CheckSession(Resource):
             return user.to_dict(), 200
         
         else:
-            return {"error": "401 Not Authorized"}, 401
+            return {"error": "401 No Session Detected"}, 401
         
 api.add_resource(CheckSession, "/check_session")
 
@@ -144,9 +144,17 @@ api.add_resource(Login, "/login")
         
 
 class Logout(Resource):
-    pass
     
+    def delete(self):
+        if session.get("user_id"):
+            session["user_id"] = None
 
+            return {"message": "Logout Succesful"}, 204
+        else:
+            return {"error": "401 Unauthorized"}, 401
+        
+api.add_resource(Logout, "/logout")
+    
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
