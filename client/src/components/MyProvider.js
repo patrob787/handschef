@@ -8,6 +8,11 @@ function MyProvider({ children }) {
     // Login Authentication
     const [user, setUser] = useState(null)
 
+    function onLogin(user) {
+        setUser(user)
+        console.log(user)
+    }
+
     useEffect(() => {
         fetch("/check_session")
         .then((resp) => {
@@ -18,12 +23,17 @@ function MyProvider({ children }) {
         .then((user) => {setUser(user)})
     }, [])
 
-  return (
-    <MyContext.Provider 
-    value ={({user: user})}>
-        {children}
-    </MyContext.Provider>
-  )
-}
+    if (!user):
+        return <Login onLogin={onLogin} />
+
+    
+    return (
+        <MyContext.Provider 
+            value ={({user: user})}
+        >
+            {children}
+        </MyContext.Provider>
+    )
+    }
 
 export default MyProvider
