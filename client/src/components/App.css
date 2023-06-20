@@ -1,0 +1,8 @@
+body {
+    background-color: burlywood;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+}

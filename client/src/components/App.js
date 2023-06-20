@@ -12,7 +12,7 @@ function App() {
   return (
     <div>
       <MyProvider>
-        <Nav />
+        {/* <Nav /> */}
         <Header />
         
         <Routes>
