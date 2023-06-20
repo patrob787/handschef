@@ -15,6 +15,8 @@ app.route('/')
 def home():
     return "Welcome to the Handchef API!!"
 
+
+# USER VIEWS
 class Users(Resource):
     def get(self):
         users = [user.to_dict() for user in User.query.all()]
@@ -78,6 +80,34 @@ class UserById(Resource):
             return {"error": "404 User not found"}, 404
         
 api.add_resource(UserById, '/users/<int:id>')
+
+class ChecksByUser(Resource):
+    def get(self, id):
+        userChecks = [check.to_dict() for check in Check.query.filter(Check.user_id == id).all()]
+
+        return userChecks, 200
+    
+api.add_resource(ChecksByUser, "/checks/user/<int:id>")
+
+# CHECK VIEWS
+class Checks(Resource):
+    def get(self):
+        
+        return [check.to_dict() for check in Check.query.all()], 200
+    
+    def post(self):
+        
+        new_check = Check(
+            user_id = request.json["user_id"],
+            table_number = request.json["table_number"]
+        )
+
+        db.session.add(new_check)
+        db.session.commit()
+
+        return new_check.to_dict(), 201
+    
+api.add_resource(Checks, "/checks")
 
 # Authentication Routes
 class SignUp(Resource):
