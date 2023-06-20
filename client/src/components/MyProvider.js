@@ -10,26 +10,32 @@ function MyProvider({ children }) {
 
     function onLogin(user) {
         setUser(user)
-        console.log(user)
+    }
+
+    function onLogout() {
+        setUser(null)
     }
 
     useEffect(() => {
         fetch("/check_session")
-        .then((resp) => {
+        .then(resp => {
             if (resp.ok) {
                 resp.json()
+                .then(data => setUser(data))
+            } else {
+                resp.json()
+                .then(err => console.log(err))
             }
         })
-        .then((user) => {setUser(user)})
     }, [])
 
-    if (!user):
+    if (!user) {
         return <Login onLogin={onLogin} />
+    }
 
-    
     return (
         <MyContext.Provider 
-            value ={({user: user})}
+            value ={({user: user, onLogout: onLogout})}
         >
             {children}
         </MyContext.Provider>

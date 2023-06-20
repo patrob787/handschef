@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 
-function SignUpForm({ onLogin }) {
+function SignUpForm({ onSignup }) {
     const [ first, setFirst ] = useState("")
     const [ last, setLast ] = useState("")
     const [ empNum, setEmpNum ] = useState("")
     const [ empConfirm, setEmpConfirm ] = useState("")
     const [ password, setPassword ] = useState("")
     const [ passwordConfirm, setPasswordConfirm ] = useState("")
+    const [ signUpOk, setSignUpOk ] = useState(false)
+
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -34,8 +36,12 @@ function SignUpForm({ onLogin }) {
             })
             .then(resp => resp.json())
             .then(data => {
-                if (data.ok) {
-                    onLogin(data)
+                if (data) {
+                    setSignUpOk(true)
+                    setTimeout(() => {
+                        onSignup()
+                    }, 2000)
+                    
                 } else {
                     alert("Unable to signup.")
                 }
@@ -93,7 +99,9 @@ function SignUpForm({ onLogin }) {
                 onChange={(e) => {setPasswordConfirm(e.target.value)}}
             /><br></br>
 
-            <button>Submit</button>
+            <button>Submit</button><br></br><br></br>
+
+            {signUpOk ? <p>Sign Up Successful!  Redirecting to Login...</p> : null}
 
         </form>
     )

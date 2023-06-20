@@ -12,7 +12,7 @@ function Login({ onLogin }) {
   return (
     <div>
         <div>
-            { displayLogin ? <LoginForm onLogin={onLogin} /> : <SignUpForm onLogin={onLogin} /> }
+            { displayLogin ? <LoginForm onLogin={onLogin} /> : <SignUpForm onSignup={onDisplayClick} /> }
         </div>
         { displayLogin ? 
             <div>
