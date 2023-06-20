@@ -84,31 +84,63 @@ class SignUp(Resource):
     
     def post(self):
         
-        
-        new_user = User(
-                first_name = request.json['first_name'],
-                last_name = request.json['last_name'],
-                password = request.json['password'],
-                emp_code = request.json['emp_code']
-            )
-        
-        print(new_user)
-        
-        db.session.add(new_user)
-        db.session.commit()
+        try:
+            new_user = User(
+                    first_name = request.json['first_name'],
+                    last_name = request.json['last_name'],
+                    password = request.json['password'],
+                    emp_code = request.json['emp_code']
+                )
+            
+            print(new_user)
+            
+            db.session.add(new_user)
+            db.session.commit()
 
-        return new_user.to_dict(), 201
-    
-    
-        # return {"error": "this shit ain't working"}
+            session["user_id"] = new_user.id
+
+            return new_user.to_dict(), 201
+        
+        except:
+            return {"error": "this shit ain't working"}
     
 api.add_resource(SignUp, "/signup")
 
 class CheckSession(Resource):
-    pass
+    
+    def get(self):
+
+        if session.get("user_id"):
+            user = User.query.filter(User.id == session["user_id"]).first()
+
+            return user.to_dict(), 200
+        
+        else:
+            return {"error": "401 Not Authorized"}, 401
+        
+api.add_resource(CheckSession, "/check_session")
+
 
 class Login(Resource):
-    pass
+    
+    def post(self):
+
+        number = request.json["emp_code"]
+        password = request.json["password"]
+
+        user = User.query.filter(User.emp_code == number).first()
+
+        if user:
+            if user.password == password:
+                session["user_id"] = user.id
+
+                return user.to_dict(), 200
+            
+        else:
+            return {"error": "401 Not Authorized"}, 401
+        
+api.add_resource(Login, "/login")
+        
 
 class Logout(Resource):
     pass
