@@ -9,7 +9,7 @@ function Nav() {
     fetch("/logout", {
       method: "DELETE",
     })
-    .then(data => onLogout())
+    .then(() => onLogout())
   }
 
   function handleSleep() {

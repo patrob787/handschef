@@ -5,6 +5,7 @@ import Home from "./Home"
 import Header from "./Header"
 import Error from "./Error"
 import MyProvider from "./MyProvider";
+import "./App.css"
 
 function App() {
   // Code goes here!

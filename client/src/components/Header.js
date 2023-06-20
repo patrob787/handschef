@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { MyContext } from './MyProvider'
 import Nav from './Nav'
 import Clock from './Clock'
@@ -6,19 +6,6 @@ import "./App.css"
 
 function Header() {
   const { user } = useContext(MyContext)
-
-  // const [ date, setDate ] = useState(new Date())
-
-  // function refreshClock() {
-  //   setDate(new Date())
-  // }
-
-  // useEffect(() => {
-  //   const timerId = setInterval(refreshClock, 1000)
-  //   return function cleanUp() {
-  //     clearInterval(timerId)
-  //   }
-  // }, [])
 
   return (
     <div className="header-container">

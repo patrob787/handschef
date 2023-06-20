@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react'
-import { MyContext } from './MyProvider'
+import React, { useState } from 'react'
+
 
 function Sleep({ user, onSleep }) {
-    // const { onSleep } = useContext(MyContext)
+    
     const [ number, setNumber ] = useState("")
   
     function handleSubmit(e) {
