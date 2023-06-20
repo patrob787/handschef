@@ -14,10 +14,11 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String, nullable=False)
     last_name = db.Column(db.String, nullable=False)
+    password = db.Column(db.String, nullable=False)
     avatar = db.Column(db.String)
     admin = db.Column(db.Boolean, default=False)
     emp_code = db.Column(db.Integer, unique=True, nullable=False)
-    job_code = db.Column(db.Integer, nullable=False)
+    job_code = db.Column(db.Integer)
     start_date = db.Column(db.DateTime, server_default=db.func.now())
 
     checks = db.relationship("Check", backref="user")

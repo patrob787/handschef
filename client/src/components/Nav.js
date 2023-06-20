@@ -1,8 +1,22 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { MyContext } from './MyProvider'
 
 function Nav() {
+
+  const { onLogout } = useContext(MyContext)
+  
+  function handleLogout() {
+    fetch("/logout", {
+      method: "DELETE",
+    })
+    .then(data => onLogout())
+  }
+  
   return (
-    <div>This is my nav bar</div>
+    <div>
+      <button>Does nothing</button>
+      <button onClick={handleLogout} >Logout</button>
+    </div>
   )
 }
 

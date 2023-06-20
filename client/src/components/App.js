@@ -4,20 +4,22 @@ import Nav from "./Nav"
 import Home from "./Home"
 import Header from "./Header"
 import Error from "./Error"
+import MyProvider from "./MyProvider";
 
 function App() {
   // Code goes here!
+  
   return (
     <div>
-
-      <Nav />
-      <Header />
-      
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="*" element={<Error />} />
-      </Routes>
-
+      <MyProvider>
+        <Nav />
+        <Header />
+        
+        <Routes>
+          <Route path="/" element={<Home/>} />
+          <Route path="*" element={<Error/>} />
+        </Routes>
+      </MyProvider>
     </div>
 )}
 
