@@ -4,12 +4,9 @@ import { MyContext } from './MyProvider'
 function Sleep({ user, onSleep }) {
     // const { onSleep } = useContext(MyContext)
     const [ number, setNumber ] = useState("")
-    console.log(user)
   
     function handleSubmit(e) {
         e.preventDefault()
-        
-        console.log(user.emp_code, number)
 
         if (number === user.emp_code) {
             onSleep()
