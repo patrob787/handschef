@@ -27,6 +27,7 @@ class Users(Resource):
             new_user = User(
                 first_name = request.form['first_name'],
                 last_name = request.form['last_name'],
+                password = request.form['password'],
                 avatar = request.form['avatar'],
                 admin = request.form['admin'],
                 emp_code = request.form['emp_code']
@@ -80,7 +81,28 @@ api.add_resource(UserById, '/users/<int:id>')
 
 # Authentication Routes
 class SignUp(Resource):
-    pass
+    
+    def post(self):
+        
+        
+        new_user = User(
+                first_name = request.json['first_name'],
+                last_name = request.json['last_name'],
+                password = request.json['password'],
+                emp_code = request.json['emp_code']
+            )
+        
+        print(new_user)
+        
+        db.session.add(new_user)
+        db.session.commit()
+
+        return new_user.to_dict(), 201
+    
+    
+        # return {"error": "this shit ain't working"}
+    
+api.add_resource(SignUp, "/signup")
 
 class CheckSession(Resource):
     pass
