@@ -20,26 +20,23 @@ function SignUpForm() {
         } else if (password !== passwordConfirm) {
             alert("Password values must match!")
         } else {
-            console.log(first, last, empConfirm, passwordConfirm)
+            fetch("/signup", {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    first_name: first,
+                    last_name: last,
+                    password: passwordConfirm,
+                    emp_code: empConfirm
+                })
+            })
+            .then(resp => resp.json())
+            .then(data => console.log(data))
         }
 
     }
-
-    // function onEmpNumber(value) {
-    //     if (value.length === 6 && parseInt(value)) {
-    //         setEmpNum(value)
-    //     } else {
-    //         alert("Employee number must be 6 digits in length")
-    //     }
-    // }
-
-    // function onPassword(value) {
-    //     if (6 <= value.length <= 10) {
-    //         setPassword(value)
-    //     } else {
-    //         alert("Password must be between 6 and 10 characters")
-    //     }
-    // }
     
     return (
         <form onSubmit={handleSubmit}>
