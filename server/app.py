@@ -102,7 +102,7 @@ class SignUp(Resource):
             return new_user.to_dict(), 201
         
         except:
-            return {"error": "this shit ain't working"}
+            return {"error": "401 Invalid"}, 401
     
 api.add_resource(SignUp, "/signup")
 
