@@ -3,7 +3,7 @@ import { MyContext } from './MyProvider'
 
 function Nav() {
 
-  const { onLogout } = useContext(MyContext)
+  const { onLogout, onSleep } = useContext(MyContext)
   
   function handleLogout() {
     fetch("/logout", {
@@ -11,11 +11,16 @@ function Nav() {
     })
     .then(data => onLogout())
   }
+
+  function handleSleep() {
+    onSleep()
+  }
   
   return (
-    <div>
-      <button>Does nothing</button>
-      <button onClick={handleLogout} >Logout</button>
+    <div className="header-nav">
+      <button className="nav-btn">Checkout</button>
+      <button className="nav-btn" onClick={handleSleep}>Exit</button>
+      <button className="nav-btn" onClick={handleLogout} >Logout</button>
     </div>
   )
 }

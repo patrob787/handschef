@@ -5,4 +5,9 @@ body {
 .header-container {
     display: flex;
     justify-content: space-between;
+    padding: 10px;
+}
+
+.header-details p {
+    margin: 5px;
 }
