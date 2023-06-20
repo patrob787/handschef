@@ -34,3 +34,29 @@ body {
 .header-details p {
     margin: 5px;
 }
+
+.home-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.option-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.option-container button {
+    width: 47%;
+    margin: 1px;
+}
+
+.check-container {
+    width: 75%;
+    height: 75vh;
+    background-color: rgb(164, 164, 244);
+    margin: 0px;
+    border: 3px solid black;
+    display: flex;
+}

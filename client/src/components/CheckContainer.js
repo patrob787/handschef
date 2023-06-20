@@ -1,8 +1,9 @@
 import React from 'react'
+import "./App.css"
 
 function CheckContainer() {
   return (
-    <div>CheckContainer</div>
+    <div className="check-container">Checks go Here</div>
   )
 }
 
