@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import LoginForm from './LoginForm'
 import SignUpForm from './SignUpForm'
 
-function Login() {
+function Login({ onLogin }) {
     const [ displayLogin, setDisplayLogin ] = useState(true)
 
     function onDisplayClick() {
@@ -12,7 +12,7 @@ function Login() {
   return (
     <div>
         <div>
-            { displayLogin ? <LoginForm /> : <SignUpForm /> }
+            { displayLogin ? <LoginForm onLogin={onLogin} /> : <SignUpForm onLogin={onLogin} /> }
         </div>
         { displayLogin ? 
             <div>

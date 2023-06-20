@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-function SignUpForm() {
+function SignUpForm({ onLogin }) {
     const [ first, setFirst ] = useState("")
     const [ last, setLast ] = useState("")
     const [ empNum, setEmpNum ] = useState("")
@@ -33,9 +33,14 @@ function SignUpForm() {
                 })
             })
             .then(resp => resp.json())
-            .then(data => console.log(data))
+            .then(data => {
+                if (data.ok) {
+                    onLogin(data)
+                } else {
+                    alert("Unable to signup.")
+                }
+            })
         }
-
     }
     
     return (

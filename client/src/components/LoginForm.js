@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form } from 'react-router-dom'
 
-function LoginForm() {
+function LoginForm({ onLogin }) {
   return (
     <form>
         <label>Employee Number</label><br></br>
