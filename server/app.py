@@ -125,7 +125,7 @@ class Login(Resource):
     
     def post(self):
 
-        number = request.json["emp_code"]
+        number = request.json["number"]
         password = request.json["password"]
 
         user = User.query.filter(User.emp_code == number).first()
