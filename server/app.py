@@ -109,6 +109,26 @@ class Checks(Resource):
     
 api.add_resource(Checks, "/checks")
 
+# ITEM VIEWS
+class Items(Resource):
+    def get(self):
+
+        return [item.to_dict() for item in Item.query.all()], 200
+    
+api.add_resource(Items, "/items")
+
+class ItemsByCategory(Resource):
+    def get(self, cat):
+        try:
+            items = [item.to_dict() for item in Item.query.filter(Item.category == cat)]
+
+            return items, 200
+        
+        except:
+            return {"error": "404 Items not found."}, 404
+        
+api.add_resource(ItemsByCategory, "/items/<string:cat>")
+
 # Authentication Routes
 class SignUp(Resource):
     

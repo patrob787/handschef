@@ -6,6 +6,15 @@ export const MyContext = createContext()
 
 function MyProvider({ children }) {
 
+    // All Items
+    const [ allItems, setAllItems ] = useState([])
+
+    useEffect(() => {
+        fetch("/items")
+        .then(resp => resp.json())
+        .then(items => setAllItems(items))
+    }, [])
+    
     // Login Authentication
     const [user, setUser] = useState(null)
 
@@ -47,7 +56,7 @@ function MyProvider({ children }) {
 
     return (
         <MyContext.Provider 
-            value ={({user: user, onLogout: onLogout, onSleep: onSleep})}
+            value ={({user: user, onLogout: onLogout, onSleep: onSleep, allItems: allItems})}
         >
             {children}
         </MyContext.Provider>
