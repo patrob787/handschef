@@ -12,10 +12,11 @@ function Home() {
     .then(data => setUserChecks(data))
   }, [])
 
-  console.log(userChecks)
 
   function updateChecks(newCheck) {
-    const checks = userChecks.append(newCheck)
+    const checks = [...userChecks, newCheck]
+    console.log(userChecks)
+    console.log(checks)
     setUserChecks(checks)
   }
 
