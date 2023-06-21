@@ -6,8 +6,10 @@ function CheckPage() {
   const [ check, setCheck ] = useState(location.state)
 
   return (
-    <div>
-      <h1>Table {check.table_number}</h1>
+    <div className="check-page">
+      <div className="order-info">
+        {"Order info goes here"}
+      </div>
     </div>
   )
 }
