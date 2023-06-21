@@ -1,10 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react'
 import CheckContainer from './CheckContainer'
 import { MyContext } from './MyProvider'
+import { useNavigate } from 'react-router-dom'
 
 function Home() {
   const { user } = useContext(MyContext)
   const [ userChecks, setUserChecks ] = useState([])
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     fetch(`/checks/user/${user.id}`)
@@ -34,7 +37,10 @@ function Home() {
       }),
     })
     .then(resp => resp.json())
-    .then(data => updateChecks(data))
+    .then(data => {
+      updateChecks(data)
+      navigate(`/check/${data.id}`, { state: data })
+    })
   }
 
   return (
