@@ -67,8 +67,8 @@ body {
 
 .check-card {
     background-color: rgba(245, 245, 220, .75);
-    height: 25vh;
-    width: 30%;
+    height: 175px;
+    width: 200px;
     text-align: center;
     border: 2px solid black;
     margin: 5px;
