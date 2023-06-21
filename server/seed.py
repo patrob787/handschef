@@ -58,12 +58,13 @@ if __name__ == '__main__':
         print("Starting seed...")
         # Seed code goes here!
 
-        User.query.delete()
+        # User.query.delete()
         Item.query.delete()
         SubItem.query.delete()
         Order.query.delete()
         Check.query.delete()
         Modifier.query.delete()
+        ItemMod.query.delete()
 
         # #Brunch
         make_item("RH Scramble", "Scramble", "https://fastly.4sqi.net/img/general/600x600/9052728_546egmQpd26GnE6eT6nvBDoV1WoCt-CFK-S_lrXmF1A.jpg", 22, True, "mornings", "brunch")

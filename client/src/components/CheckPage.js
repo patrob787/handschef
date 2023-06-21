@@ -1,12 +1,16 @@
 import React, { useState, useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { MyContext } from './MyProvider'
+import Order from './Order'
 
 function CheckPage() {
   const location = useLocation()
+  
   const [ check, setCheck ] = useState(location.state)
   const [ menu, setMenu ] = useState([])
   const [ orders, setOrders ] = useState([])
+  const [ selected, setSelected ] = useState([])
+  
   const { allItems } = useContext(MyContext)
 
   console.log(check)
@@ -34,32 +38,57 @@ function CheckPage() {
     return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
   })
 
+  // function handleOrderClick(e) {
+  //   if (e.target.nodeName === "P") {
+  //     console.log(e.target.parentNode.children[0].innerText)
+  //   } else {
+  //     console.log(e.target.children[0].innerText)
+  //   }
+  // }
+
   const orderItems = orders.map((order) => {
     return (
-      <table>
-        <tr>
-          <td>{order.name}</td>
-          <td></td>
-          <td>${order.price}</td>
-        </tr>
-      </table>
+
+      // <div className="order-row" onClick={handleOrderClick}>
+      //   <p>{order.name}</p>
+      //   <p>${order.price}</p>
+      // </div>
+      <Order key={order.id} order={order} />
+    
+      
     )
   })
   
   return (
     <div className="check-page">
       
-      <div className="order-info">
-        <h3>Table {check.table_number}</h3>
-        {orderItems}
+      <div className="order-page">
+        <div className="order-info">
+          <h3>Table {check.table_number}</h3>
+          <div className="seats">
+            <button>All</button>
+            <button>Seat 1</button>
+          </div>
+          {orderItems}
+        </div>
+        
+        <div className="menu-int">
+          {itemBtns}
+        </div>
+        
+        <div className="menu-btn-container">
+          {catBtns}
+        </div>
       </div>
-      
-      <div className="menu-int">
-        {itemBtns}
-      </div>
-      
-      <div className="menu-btn-container">
-        {catBtns}
+
+      <div className="option-btn-container">
+        <button>Pay</button>
+        <button>Edit Seats</button>
+        <button>Add Seat</button>
+        <button>Void</button>
+        <button>Print Check</button>
+        <button>Send</button>
+        <button>Send/Exit</button>
       </div>
     
     </div>
