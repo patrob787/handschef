@@ -9,12 +9,11 @@ function CheckPage() {
   const [ check, setCheck ] = useState(location.state)
   const [ menu, setMenu ] = useState([])
   const [ orders, setOrders ] = useState([])
-  const [ selected, setSelected ] = useState([])
+  const [ itemsSelected, setItemsSelected ] = useState([])
   
   const { allItems } = useContext(MyContext)
 
-  console.log(check)
-  console.log(selected)
+  // console.log(check)
   
   function handleClick(e) {
     
@@ -30,15 +29,30 @@ function CheckPage() {
   }
 
   function handleOrdersSelected(item) {
-    setSelected([...selected, item])
+    setItemsSelected([...itemsSelected, item])
   }
-
+  console.log(itemsSelected)
+  
   function handleOrdersDeselected(item) {
-    setSelected(selected.filter((i) => {
+    setItemsSelected(itemsSelected.filter((i) => {
         if (i.id !== item.id) {
           return i
         }
     }))
+  }
+
+  function handleVoidClick() {
+    console.log(itemsSelected)
+    console.log(orders)
+    
+    setOrders(orders.filter((o) => {
+      if (!itemsSelected.find((i) => {
+        return i.name === o.name
+      })) {
+        return o
+      }
+    }))
+    setItemsSelected([])
   }
   
   const categories = Array.from(new Set(allItems.map(item => item.category)))
@@ -51,21 +65,10 @@ function CheckPage() {
     return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
   })
 
-  // function handleOrderClick(e) {
-  //   if (e.target.nodeName === "P") {
-  //     console.log(e.target.parentNode.children[0].innerText)
-  //   } else {
-  //     console.log(e.target.children[0].innerText)
-  //   }
-  // }
 
   const orderItems = orders.map((order) => {
     return (
 
-      // <div className="order-row" onClick={handleOrderClick}>
-      //   <p>{order.name}</p>
-      //   <p>${order.price}</p>
-      // </div>
       <Order 
         key={order.id} 
         order={order} 
@@ -73,7 +76,6 @@ function CheckPage() {
         onDeselected={handleOrdersDeselected} 
       />
     
-      
     )
   })
   
@@ -103,7 +105,7 @@ function CheckPage() {
         <button>Pay</button>
         <button>Edit Seats</button>
         <button>Add Seat</button>
-        <button>Void</button>
+        <button onClick={handleVoidClick}>Void</button>
         <button>Print Check</button>
         <button>Send</button>
         <button>Send/Exit</button>
