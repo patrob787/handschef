@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-function Order({ order }) {
+function Order({ order, onSelected, onDeselected }) {
   const [ selected, setSelected ] = useState(false)
 
   function handleOrderClick(e) {
@@ -19,6 +19,7 @@ function Order({ order }) {
       !selected ? node.classList.add("test-select") : node.classList.remove("test-select")
       
     }
+    !selected ? onSelected(order) : onDeselected(order)
     setSelected(!selected)
     
   }

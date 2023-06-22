@@ -14,6 +14,7 @@ function CheckPage() {
   const { allItems } = useContext(MyContext)
 
   console.log(check)
+  console.log(selected)
   
   function handleClick(e) {
     
@@ -26,6 +27,18 @@ function CheckPage() {
     const item = allItems.find(i => i.button_name === e.target.value)
     
     setOrders([...orders, item])
+  }
+
+  function handleOrdersSelected(item) {
+    setSelected([...selected, item])
+  }
+
+  function handleOrdersDeselected(item) {
+    setSelected(selected.filter((i) => {
+        if (i.id !== item.id) {
+          return i
+        }
+    }))
   }
   
   const categories = Array.from(new Set(allItems.map(item => item.category)))
@@ -53,7 +66,12 @@ function CheckPage() {
       //   <p>{order.name}</p>
       //   <p>${order.price}</p>
       // </div>
-      <Order key={order.id} order={order} />
+      <Order 
+        key={order.id} 
+        order={order} 
+        onSelected={handleOrdersSelected} 
+        onDeselected={handleOrdersDeselected} 
+      />
     
       
     )

@@ -150,6 +150,7 @@ button {
     margin-right: 5px;
     margin-left: 5px;
     height: 2em;
+    align-items: center;
 }
 
 .test-select {
