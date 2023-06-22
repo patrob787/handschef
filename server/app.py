@@ -109,6 +109,31 @@ class Checks(Resource):
     
 api.add_resource(Checks, "/checks")
 
+class ChecksById(Resource):
+    def get(self, id):
+        try:
+            check = Check.query.filter_by(id=id).first().to_dict()
+
+            return check, 200
+        except:
+            return {"error": "404 Check not found"}, 404
+        
+    def patch(self, id):
+        try:
+            check = Check.query.filter_by(id=id).first()
+
+            for attr in request.json:
+                setattr(check, attr, request.json[attr])
+
+            db.session.add(check)
+            db.session.commit()
+
+            return check.to_dict(), 201
+        except:
+            return {"error": "400 Failed"}, 400
+        
+api.add_resource(ChecksById, "/checks/<int:id>")
+
 # ITEM VIEWS
 class Items(Resource):
     def get(self):

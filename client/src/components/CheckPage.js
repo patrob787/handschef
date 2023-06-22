@@ -1,21 +1,30 @@
-import React, { useState, useContext } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { MyContext } from './MyProvider'
 import Order from './Order'
 
 function CheckPage() {
   const location = useLocation()
+  const navigate = useNavigate()
   
   const [ check, setCheck ] = useState(location.state)
   const [ menu, setMenu ] = useState([])
-  const [ orders, setOrders ] = useState([])
+  const [ newOrders, setNewOrders ] = useState([])
+  const [ currentOrders, setCurrerntOrders ] = useState([])
   const [ itemsSelected, setItemsSelected ] = useState([])
+  const [ seat, setSeat ] = useState(1)
   
   const { allItems } = useContext(MyContext)
 
-  console.log(check)
+  // console.log(check)
+
+  useEffect(() => {
+    fetch(`/orders/check/${check.id}`)
+    .then(resp => resp.json())
+    .then(data => setCurrerntOrders(data))
+  }, [])
   
-  function handleClick(e) {
+  function handleCatClick(e) {
     
     fetch(`/items/${e.target.value}`)
     .then(resp => resp.json())
@@ -25,7 +34,7 @@ function CheckPage() {
   function handleItemClick(e) {
     const item = allItems.find(i => i.button_name === e.target.value)
     
-    setOrders([...orders, item])
+    setNewOrders([...newOrders, item])
   }
 
   function handleOrdersSelected(item) {
@@ -42,7 +51,7 @@ function CheckPage() {
 
   function handleVoidClick() {
     
-    setOrders(orders.filter((o) => {
+    setNewOrders(newOrders.filter((o) => {
       if (!itemsSelected.find((i) => {
         return i.name === o.name
       })) {
@@ -51,11 +60,40 @@ function CheckPage() {
     }))
     setItemsSelected([])
   }
+
+  function handleSendClick() {
+    
+    if (newOrders.length > 0) {
+      newOrders.forEach((order) => {
+        fetch("/orders", {
+          method: "POST",
+          headers: {"Content-type": "application/json"},
+          body: JSON.stringify({
+            item_id: order.id,
+            check_id: check.id,
+            seat_number: seat
+          })
+        })
+        .then(resp => resp.json())
+        .then(data => {
+          setCurrerntOrders([...currentOrders, data])
+          console.log(currentOrders)
+          console.log(newOrders)
+        })
+      })
+    }
+    setNewOrders([])
+  }
+
+  function handleExitClick() {
+    handleSendClick()
+    navigate("/")
+  }
   
   const categories = Array.from(new Set(allItems.map(item => item.category)))
   
   const catBtns = categories.map((cat) => {
-    return <button className="cat-btn" value={cat} onClick={handleClick}>{cat}</button>
+    return <button className="cat-btn" value={cat} onClick={handleCatClick}>{cat}</button>
   })
   
   const itemBtns = menu.map((item) => {
@@ -63,12 +101,25 @@ function CheckPage() {
   })
 
 
-  const orderItems = orders.map((order) => {
+  const newOrderItems = newOrders.map((order) => {
     return (
 
       <Order 
         key={order.id} 
         order={order} 
+        onSelected={handleOrdersSelected} 
+        onDeselected={handleOrdersDeselected} 
+      />
+    
+    )
+  })
+
+  const existingOrders = currentOrders.map((order) => {
+    return (
+
+      <Order 
+        key={order.id} 
+        order={order.item} 
         onSelected={handleOrdersSelected} 
         onDeselected={handleOrdersDeselected} 
       />
@@ -86,7 +137,8 @@ function CheckPage() {
             <button>All</button>
             <button>Seat 1</button>
           </div>
-          {orderItems}
+          {existingOrders}
+          {newOrderItems}
         </div>
         
         <div className="menu-int">
@@ -104,8 +156,8 @@ function CheckPage() {
         <button>Add Seat</button>
         <button onClick={handleVoidClick}>Void</button>
         <button>Print Check</button>
-        <button>Send</button>
-        <button>Send/Exit</button>
+        <button onClick={handleSendClick}>Send</button>
+        <button onClick={handleExitClick}>Send/Exit</button>
       </div>
     
     </div>
