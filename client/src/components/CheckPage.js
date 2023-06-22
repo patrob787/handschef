@@ -13,7 +13,7 @@ function CheckPage() {
   
   const { allItems } = useContext(MyContext)
 
-  // console.log(check)
+  console.log(check)
   
   function handleClick(e) {
     
@@ -31,7 +31,6 @@ function CheckPage() {
   function handleOrdersSelected(item) {
     setItemsSelected([...itemsSelected, item])
   }
-  console.log(itemsSelected)
   
   function handleOrdersDeselected(item) {
     setItemsSelected(itemsSelected.filter((i) => {
@@ -42,8 +41,6 @@ function CheckPage() {
   }
 
   function handleVoidClick() {
-    console.log(itemsSelected)
-    console.log(orders)
     
     setOrders(orders.filter((o) => {
       if (!itemsSelected.find((i) => {

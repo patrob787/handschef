@@ -105,7 +105,7 @@ class Order(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
     check_id = db.Column(db.Integer, db.ForeignKey("checks.id"))
-    seat_number = db.Column(db.Integer)
+    seat_number = db.Column(db.Integer, default=1)
     message = db.Column(db.String)
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())

@@ -129,6 +129,42 @@ class ItemsByCategory(Resource):
         
 api.add_resource(ItemsByCategory, "/items/<string:cat>")
 
+# ORDER VIEWS
+class Orders(Resource):
+    def get(self):
+
+        return [order.to_dict() for order in Order.query.all()], 200
+    
+    def post(self):
+        try:
+            new_order = Order(
+                item_id = request.json["item_id"],
+                check_id = request.json["check_id"],
+                seat_number = request.json["seat_number"]
+            )
+
+            db.session.add(new_order)
+            db.session.commit()
+
+            return new_order.to_dict(), 201
+        except:
+            
+            return {"error": "400 Order not acceptable"}, 400
+        
+api.add_resource(Orders, "/orders")
+
+class OrdersByCheck(Resource):
+    def get(self, id):
+        
+        try:
+            orders = [order.to_dict() for order in Order.query.filter(Order.check_id == id).all()]
+
+            return orders, 200
+        except:
+            return {"error": "404 cannot find orders"}, 404
+        
+api.add_resource(OrdersByCheck, "/orders/check/<int:id>")
+
 # Authentication Routes
 class SignUp(Resource):
     
