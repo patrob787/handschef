@@ -12,11 +12,12 @@ function CheckPage() {
   const [ currentOrders, setCurrentOrders ] = useState([])
   const [ itemsSelected, setItemsSelected ] = useState([])
   const [ seat, setSeat ] = useState(1)
-  const [ seatNums, setSeatNums ] = useState([1])
+  const [ seatNums, setSeatNums ] = useState([])
   const [ reset, setReset ] = useState(false)
   
   const { allItems } = useContext(MyContext)
 
+  console.log("page has re-rendered", currentOrders)
   
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
@@ -25,11 +26,15 @@ function CheckPage() {
       setCurrentOrders(data)
       console.log(data)
 
-      const nums = data.map(i => i.seat_number)
-      const numArray = nums.filter((num, i) => {
-        return nums.indexOf(num) === i
-      })
-      setSeatNums(numArray)
+      if (data.length > 0) {
+        const nums = data.map(i => i.seat_number)
+        const numArray = nums.filter((num, i) => {
+          return nums.indexOf(num) === i
+        })
+        setSeatNums(numArray.sort())
+      } else {
+        setSeatNums([1])
+      }
     })
   }, [reset])
   
@@ -42,8 +47,10 @@ function CheckPage() {
 
   function handleItemClick(e) {
     const item = allItems.find(i => i.button_name === e.target.value)
+    item.seat_number = seat
     
     setCurrentOrders([...currentOrders, item])
+    setSeatNums([...seatNums])
   }
 
   function handleOrdersSelected(item) {
@@ -58,10 +65,33 @@ function CheckPage() {
     }))
   }
 
+  function renderOrdersBySeat(number) {
+    const ordersToRender = currentOrders.map((order) => {
+      if (order.seat_number === number) {
+        return (
+          Object.keys(order).includes("item") ? 
+          <Order 
+            key={order.id} 
+            order={order.item} 
+            onSelected={handleOrdersSelected} 
+            onDeselected={handleOrdersDeselected} 
+          /> :
+          <Order 
+            key={order.id} 
+            order={order} 
+            onSelected={handleOrdersSelected} 
+            onDeselected={handleOrdersDeselected} 
+          />
+        )
+      }
+    })
+
+    return (<div>{ordersToRender}</div>)
+  }
+
   // BOTTOM MENU BUTTONS
 
   function addSeatClick() {
-    console.log(seatNums[-1])
 
     const nextSeat = seatNums.length + 1
     setSeatNums([...seatNums, nextSeat])
@@ -102,7 +132,7 @@ function CheckPage() {
           body: JSON.stringify({
             item_id: order.id,
             check_id: check.id,
-            seat_number: seat
+            seat_number: order.seat_number
           })
         })
         .then(resp => resp.json())
@@ -135,24 +165,33 @@ function CheckPage() {
     )
   })
 
-  const renderOrders = currentOrders.map((order) => {
-        return (
+  // const renderOrders = currentOrders.map((order) => {
+  //       return (
 
-          Object.keys(order).includes("item") ? 
-          <Order 
-            key={order.id} 
-            order={order.item} 
-            onSelected={handleOrdersSelected} 
-            onDeselected={handleOrdersDeselected} 
-          /> :
-          <Order 
-            key={order.id} 
-            order={order} 
-            onSelected={handleOrdersSelected} 
-            onDeselected={handleOrdersDeselected} 
-          />
+  //         Object.keys(order).includes("item") ? 
+  //         <Order 
+  //           key={order.id} 
+  //           order={order.item} 
+  //           onSelected={handleOrdersSelected} 
+  //           onDeselected={handleOrdersDeselected} 
+  //         /> :
+  //         <Order 
+  //           key={order.id} 
+  //           order={order} 
+  //           onSelected={handleOrdersSelected} 
+  //           onDeselected={handleOrdersDeselected} 
+  //         />
 
-        )
+  //       )
+  // })
+
+  const renderOrders = seatNums.map((num) => {
+    return (
+      <div>
+        <h4>Seat {num}</h4>
+        {renderOrdersBySeat(num)}
+      </div>
+    )
   })
   
   return (

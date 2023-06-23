@@ -132,6 +132,17 @@ class ChecksById(Resource):
         except:
             return {"error": "400 Failed"}, 400
         
+    def delete(self, id):
+        try:
+            check = Check.query.filter_by(id=id).first()
+
+            db.session.delete(check)
+            db.session.commit()
+
+            return {}, 202
+        except:
+            return {"error", "404 Check not found"}, 404
+        
 api.add_resource(ChecksById, "/checks/<int:id>")
 
 # ITEM VIEWS
