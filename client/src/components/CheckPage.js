@@ -12,19 +12,24 @@ function CheckPage() {
   const [ currentOrders, setCurrentOrders ] = useState([])
   const [ itemsSelected, setItemsSelected ] = useState([])
   const [ seat, setSeat ] = useState(1)
+  const [ seatNums, setSeatNums ] = useState([1])
   const [ reset, setReset ] = useState(false)
   
   const { allItems } = useContext(MyContext)
 
-  console.log(reset)
-
-
+  
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
     .then(resp => resp.json())
     .then(data => {
       setCurrentOrders(data)
       console.log(data)
+
+      const nums = data.map(i => i.seat_number)
+      const numArray = nums.filter((num, i) => {
+        return nums.indexOf(num) === i
+      })
+      setSeatNums(numArray)
     })
   }, [reset])
   
@@ -53,6 +58,20 @@ function CheckPage() {
     }))
   }
 
+  // BOTTOM MENU BUTTONS
+
+  function addSeatClick() {
+    console.log(seatNums[-1])
+
+    const nextSeat = seatNums.length + 1
+    setSeatNums([...seatNums, nextSeat])
+  }
+
+  function handleSeatClick(e) {
+    console.log(e.target.value)
+    setSeat(e.target.value)
+  }
+
   function handleVoidClick() {
     
     setCurrentOrders(currentOrders.filter((o) => {
@@ -64,6 +83,10 @@ function CheckPage() {
     }))
     setItemsSelected([])
     
+  }
+
+  function handlePrintClick() {
+    alert("Your Check is printing!")
   }
 
   let orderCatch = [];
@@ -104,8 +127,13 @@ function CheckPage() {
   
   const itemBtns = menu.map((item) => {
     return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
-  })
+  }) 
 
+  const renderSeatButtons = seatNums.map((num) => {
+    return(
+      <button value={num} onClick={handleSeatClick}>Seat {num}</button>
+    )
+  })
 
   const renderOrders = currentOrders.map((order) => {
         return (
@@ -134,8 +162,8 @@ function CheckPage() {
         <div className="order-info">
           <h3>Table {check.table_number}</h3>
           <div className="seats">
-            <button>All</button>
-            <button>Seat 1</button>
+            <button value={"All"} onClick={handleSeatClick}>All</button>
+            {renderSeatButtons}
           </div>
           {renderOrders}
         </div>
@@ -152,9 +180,9 @@ function CheckPage() {
       <div className="option-btn-container">
         <button>Pay</button>
         <button>Edit Seats</button>
-        <button>Add Seat</button>
+        <button onClick={addSeatClick}>Add Seat</button>
         <button onClick={handleVoidClick}>Void</button>
-        <button>Print Check</button>
+        <button onClick={handlePrintClick}>Print Check</button>
         <button onClick={handleSendClick}>Send</button>
         <button onClick={handleExitClick}>Send/Exit</button>
       </div>
