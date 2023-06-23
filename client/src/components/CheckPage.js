@@ -84,7 +84,6 @@ function CheckPage() {
         })
         .then(resp => resp.json())
         .then(data => {
-          console.log(data)
           setReset(!reset)
         })
       }
