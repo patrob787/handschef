@@ -9,20 +9,24 @@ function CheckPage() {
   
   const [ check, setCheck ] = useState(location.state)
   const [ menu, setMenu ] = useState([])
-  const [ newOrders, setNewOrders ] = useState([])
-  const [ currentOrders, setCurrerntOrders ] = useState([])
+  const [ currentOrders, setCurrentOrders ] = useState([])
   const [ itemsSelected, setItemsSelected ] = useState([])
   const [ seat, setSeat ] = useState(1)
+  const [ reset, setReset ] = useState(false)
   
   const { allItems } = useContext(MyContext)
 
-  // console.log(check)
+  console.log(reset)
+
 
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
     .then(resp => resp.json())
-    .then(data => setCurrerntOrders(data))
-  }, [])
+    .then(data => {
+      setCurrentOrders(data)
+      console.log(data)
+    })
+  }, [reset])
   
   function handleCatClick(e) {
     
@@ -34,7 +38,7 @@ function CheckPage() {
   function handleItemClick(e) {
     const item = allItems.find(i => i.button_name === e.target.value)
     
-    setNewOrders([...newOrders, item])
+    setCurrentOrders([...currentOrders, item])
   }
 
   function handleOrdersSelected(item) {
@@ -51,7 +55,7 @@ function CheckPage() {
 
   function handleVoidClick() {
     
-    setNewOrders(newOrders.filter((o) => {
+    setCurrentOrders(currentOrders.filter((o) => {
       if (!itemsSelected.find((i) => {
         return i.name === o.name
       })) {
@@ -59,12 +63,16 @@ function CheckPage() {
       }
     }))
     setItemsSelected([])
+    
   }
 
+  let orderCatch = [];
+
   function handleSendClick() {
-    
-    if (newOrders.length > 0) {
-      newOrders.forEach((order) => {
+    console.log(orderCatch)
+    currentOrders.forEach((order) => {
+      if (!Object.keys(order).includes("item")) {
+      
         fetch("/orders", {
           method: "POST",
           headers: {"Content-type": "application/json"},
@@ -76,14 +84,13 @@ function CheckPage() {
         })
         .then(resp => resp.json())
         .then(data => {
-          setCurrerntOrders([...currentOrders, data])
-          console.log(currentOrders)
-          console.log(newOrders)
+          console.log(data)
+          setReset(!reset)
         })
-      })
-    }
-    setNewOrders([])
+      }
+    })
   }
+
 
   function handleExitClick() {
     handleSendClick()
@@ -101,30 +108,24 @@ function CheckPage() {
   })
 
 
-  const newOrderItems = newOrders.map((order) => {
-    return (
+  const renderOrders = currentOrders.map((order) => {
+        return (
 
-      <Order 
-        key={order.id} 
-        order={order} 
-        onSelected={handleOrdersSelected} 
-        onDeselected={handleOrdersDeselected} 
-      />
-    
-    )
-  })
+          Object.keys(order).includes("item") ? 
+          <Order 
+            key={order.id} 
+            order={order.item} 
+            onSelected={handleOrdersSelected} 
+            onDeselected={handleOrdersDeselected} 
+          /> :
+          <Order 
+            key={order.id} 
+            order={order} 
+            onSelected={handleOrdersSelected} 
+            onDeselected={handleOrdersDeselected} 
+          />
 
-  const existingOrders = currentOrders.map((order) => {
-    return (
-
-      <Order 
-        key={order.id} 
-        order={order.item} 
-        onSelected={handleOrdersSelected} 
-        onDeselected={handleOrdersDeselected} 
-      />
-    
-    )
+        )
   })
   
   return (
@@ -137,8 +138,7 @@ function CheckPage() {
             <button>All</button>
             <button>Seat 1</button>
           </div>
-          {existingOrders}
-          {newOrderItems}
+          {renderOrders}
         </div>
         
         <div className="menu-int">
