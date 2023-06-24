@@ -10,7 +10,6 @@ function CheckPage() {
   const [ check, setCheck ] = useState(location.state)
   const [ menu, setMenu ] = useState([])
   const [ currentOrders, setCurrentOrders ] = useState([])
-  const [ renderedOrders, setRenderedOrders ] = useState(null)
   const [ itemsSelected, setItemsSelected ] = useState([])
   const [ seat, setSeat ] = useState(1)
   const [ seatNums, setSeatNums ] = useState([])
@@ -54,7 +53,8 @@ function CheckPage() {
       id: item.id,
       name: item.name,
       price: item.price,
-      seat_number: seat
+      seat_number: seat,
+      staged: true
     }
     
 
@@ -144,7 +144,7 @@ function CheckPage() {
   
   const renderSeatButtons = seatNums.map((num) => {
     return(
-      <button value={num} onClick={handleSeatClick}>Seat {num}</button>
+      <button value={num} onClick={handleSeatClick} className={seat === num ? "seat-select" : "seat-neutral"}>Seat {num}</button>
       )
     })
     
@@ -164,15 +164,19 @@ function CheckPage() {
   
   return (
     <div className="check-page">
-      
       <div className="order-page">
+        
         <div className="order-info">
           <h3>Table {check.table_number}</h3>
+          
           <div className="seats">
-            <button value={"All"} onClick={handleSeatClick}>All</button>
+            {/* <button value={"All"} onClick={handleSeatClick}>All</button> */}
             {renderSeatButtons}
           </div>
-          {renderSeats}
+          
+          <div className="check-detail">
+            {renderSeats}
+          </div>
         </div>
         
         <div className="menu-int">

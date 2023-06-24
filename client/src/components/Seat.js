@@ -28,7 +28,7 @@ function Seat({ orders, seatNumber, onSelected, onDeselected }) {
     })
 
     return (
-        <div>
+        <div className="seat-div">
             <h4>Seat {seatNumber}</h4>
             {renderOrders}
         </div>

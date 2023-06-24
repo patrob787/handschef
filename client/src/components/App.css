@@ -85,6 +85,8 @@ button {
 }
 
 .order-info {
+    display: flex;
+    flex-direction: column;
     background-color: white;
     width: 30%;
     height: 80vh;
@@ -122,11 +124,10 @@ button {
 }
 
 .item-btn {
-    padding: 20px;
     width: 200px;
     height: 100px;
     background-color: crimson;
-    font-size: 150%;
+    font-size: 130%;
     font-weight: bold;
     margin: 3px;
 }
@@ -149,11 +150,58 @@ button {
     justify-content: space-between;
     margin-right: 5px;
     margin-left: 5px;
+    margin-top: -2%;
     height: 2em;
     align-items: center;
+    font-size: .9em;
 }
 
-.test-select {
+.order-staged {
+    display: flex;
+    justify-content: space-between;
+    margin-right: 5px;
+    margin-left: 5px;
+    margin-top: -2%;
+    height: 2em;
+    align-items: center;
+    font-size: 1em;
+    font-weight: bold;
+    font-style: italic;
+    /* color: crimson; */
+}
+
+
+.order-select {
     background-color: black;
     color: white;
+}
+
+.seats {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.seats button {
+    padding: 7px;
+    border: 1px black solid;
+}
+
+.seat-neutral {
+    background-color: darksalmon;
+}
+
+.seat-select {
+    background-color: crimson;
+    color: white;
+}
+
+.check-detail {
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 10px;
+}
+
+.seat-div h4 {
+    text-decoration: underline;
+    font-style: italic;
 }

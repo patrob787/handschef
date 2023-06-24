@@ -11,13 +11,13 @@ function Order({ order, onSelected, onDeselected }) {
       
       node = e.target.parentNode
       
-      !selected ? node.classList.add("test-select") : node.classList.remove("test-select")
+      !selected ? node.classList.add("order-select") : node.classList.remove("order-select")
       
     } else {
       
       node = e.target
       
-      !selected ? node.classList.add("test-select") : node.classList.remove("test-select")
+      !selected ? node.classList.add("order-select") : node.classList.remove("order-select")
       
     }
     !selected ? onSelected(order) : onDeselected(order)
@@ -25,8 +25,9 @@ function Order({ order, onSelected, onDeselected }) {
     
   }
 
+
   return (
-    <div className="order-row" onClick={handleOrderClick}>
+    <div className={order.staged ? "order-staged" : "order-row"} onClick={handleOrderClick}>
       <p>{order.name}</p>
       <p>${order.price}</p>
     </div>
