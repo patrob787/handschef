@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { MyContext } from './MyProvider'
-import Order from './Order'
+import Seat from './Seat'
 
 function CheckPage() {
   const location = useLocation()
@@ -10,22 +10,20 @@ function CheckPage() {
   const [ check, setCheck ] = useState(location.state)
   const [ menu, setMenu ] = useState([])
   const [ currentOrders, setCurrentOrders ] = useState([])
+  const [ renderedOrders, setRenderedOrders ] = useState(null)
   const [ itemsSelected, setItemsSelected ] = useState([])
   const [ seat, setSeat ] = useState(1)
   const [ seatNums, setSeatNums ] = useState([])
   const [ reset, setReset ] = useState(false)
   
   const { allItems } = useContext(MyContext)
-
-  console.log("page has re-rendered", currentOrders)
   
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
     .then(resp => resp.json())
     .then(data => {
       setCurrentOrders(data)
-      console.log(data)
-
+      
       if (data.length > 0) {
         const nums = data.map(i => i.seat_number)
         const numArray = nums.filter((num, i) => {
@@ -39,18 +37,28 @@ function CheckPage() {
   }, [reset])
   
   function handleCatClick(e) {
+    const catItems = allItems.filter((i) => {
+      return i.category === e.target.value
+    })
+    setMenu(catItems)
     
-    fetch(`/items/${e.target.value}`)
-    .then(resp => resp.json())
-    .then(items => setMenu(items))
+    // fetch(`/items/${e.target.value}`)
+    // .then(resp => resp.json())
+    // .then(items => setMenu(items))
   }
 
   function handleItemClick(e) {
     const item = allItems.find(i => i.button_name === e.target.value)
-    item.seat_number = seat
+
+    const itemCopy = {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      seat_number: seat
+    }
     
-    setCurrentOrders([...currentOrders, item])
-    setSeatNums([...seatNums])
+
+    setCurrentOrders([...currentOrders, itemCopy])
   }
 
   function handleOrdersSelected(item) {
@@ -65,43 +73,20 @@ function CheckPage() {
     }))
   }
 
-  function renderOrdersBySeat(number) {
-    const ordersToRender = currentOrders.map((order) => {
-      if (order.seat_number === number) {
-        return (
-          Object.keys(order).includes("item") ? 
-          <Order 
-            key={order.id} 
-            order={order.item} 
-            onSelected={handleOrdersSelected} 
-            onDeselected={handleOrdersDeselected} 
-          /> :
-          <Order 
-            key={order.id} 
-            order={order} 
-            onSelected={handleOrdersSelected} 
-            onDeselected={handleOrdersDeselected} 
-          />
-        )
-      }
-    })
-
-    return (<div>{ordersToRender}</div>)
-  }
-
+  
   // BOTTOM MENU BUTTONS
-
+  
   function addSeatClick() {
-
+    
     const nextSeat = seatNums.length + 1
     setSeatNums([...seatNums, nextSeat])
   }
-
+  
   function handleSeatClick(e) {
-    console.log(e.target.value)
-    setSeat(e.target.value)
+    
+    setSeat(parseInt(e.target.value))
   }
-
+  
   function handleVoidClick() {
     
     setCurrentOrders(currentOrders.filter((o) => {
@@ -114,18 +99,17 @@ function CheckPage() {
     setItemsSelected([])
     
   }
-
+  
   function handlePrintClick() {
     alert("Your Check is printing!")
   }
-
-  let orderCatch = [];
-
+  
+  
   function handleSendClick() {
-    console.log(orderCatch)
+    
     currentOrders.forEach((order) => {
       if (!Object.keys(order).includes("item")) {
-      
+        
         fetch("/orders", {
           method: "POST",
           headers: {"Content-type": "application/json"},
@@ -142,8 +126,7 @@ function CheckPage() {
       }
     })
   }
-
-
+  
   function handleExitClick() {
     handleSendClick()
     navigate("/")
@@ -158,41 +141,26 @@ function CheckPage() {
   const itemBtns = menu.map((item) => {
     return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
   }) 
-
+  
   const renderSeatButtons = seatNums.map((num) => {
     return(
       <button value={num} onClick={handleSeatClick}>Seat {num}</button>
-    )
-  })
-
-  // const renderOrders = currentOrders.map((order) => {
-  //       return (
-
-  //         Object.keys(order).includes("item") ? 
-  //         <Order 
-  //           key={order.id} 
-  //           order={order.item} 
-  //           onSelected={handleOrdersSelected} 
-  //           onDeselected={handleOrdersDeselected} 
-  //         /> :
-  //         <Order 
-  //           key={order.id} 
-  //           order={order} 
-  //           onSelected={handleOrdersSelected} 
-  //           onDeselected={handleOrdersDeselected} 
-  //         />
-
-  //       )
-  // })
-
-  const renderOrders = seatNums.map((num) => {
+      )
+    })
+    
+  
+  const renderSeats = seatNums.map((num) => {
     return (
-      <div>
-        <h4>Seat {num}</h4>
-        {renderOrdersBySeat(num)}
-      </div>
+      <Seat 
+        key={num} 
+        orders={currentOrders} 
+        seatNumber={num} 
+        onSelected={handleOrdersSelected} 
+        onDeselected={handleOrdersDeselected} 
+      />
     )
   })
+  
   
   return (
     <div className="check-page">
@@ -204,7 +172,7 @@ function CheckPage() {
             <button value={"All"} onClick={handleSeatClick}>All</button>
             {renderSeatButtons}
           </div>
-          {renderOrders}
+          {renderSeats}
         </div>
         
         <div className="menu-int">

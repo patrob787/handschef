@@ -18,8 +18,7 @@ function Home() {
 
   function updateChecks(newCheck) {
     const checks = [...userChecks, newCheck]
-    console.log(userChecks)
-    console.log(checks)
+    
     setUserChecks(checks)
   }
 
