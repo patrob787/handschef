@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { MyContext } from './MyProvider'
+import CheckCard from './CheckCard'
+import "./App.css"
 
-function CheckContainer() {
+function CheckContainer({ userChecks }) {
+
+  const { user } = useContext(MyContext)
+
+  const checkMap = userChecks.map((check) => {
+    return <CheckCard key={check.id} check={check} />
+  })
+
   return (
-    <div>CheckContainer</div>
+    <div className="check-container">{checkMap}</div>
   )
 }
 

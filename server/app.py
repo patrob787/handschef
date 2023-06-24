@@ -15,6 +15,8 @@ app.route('/')
 def home():
     return "Welcome to the Handchef API!!"
 
+
+# USER VIEWS
 class Users(Resource):
     def get(self):
         users = [user.to_dict() for user in User.query.all()]
@@ -78,6 +80,126 @@ class UserById(Resource):
             return {"error": "404 User not found"}, 404
         
 api.add_resource(UserById, '/users/<int:id>')
+
+class ChecksByUser(Resource):
+    def get(self, id):
+        userChecks = [check.to_dict() for check in Check.query.filter(Check.user_id == id).all()]
+
+        return userChecks, 200
+    
+api.add_resource(ChecksByUser, "/checks/user/<int:id>")
+
+# CHECK VIEWS
+class Checks(Resource):
+    def get(self):
+        
+        return [check.to_dict() for check in Check.query.all()], 200
+    
+    def post(self):
+        
+        new_check = Check(
+            user_id = request.json["user_id"],
+            table_number = request.json["table_number"]
+        )
+
+        db.session.add(new_check)
+        db.session.commit()
+
+        return new_check.to_dict(), 201
+    
+api.add_resource(Checks, "/checks")
+
+class ChecksById(Resource):
+    def get(self, id):
+        try:
+            check = Check.query.filter_by(id=id).first().to_dict()
+
+            return check, 200
+        except:
+            return {"error": "404 Check not found"}, 404
+        
+    def patch(self, id):
+        try:
+            check = Check.query.filter_by(id=id).first()
+
+            for attr in request.json:
+                setattr(check, attr, request.json[attr])
+
+            db.session.add(check)
+            db.session.commit()
+
+            return check.to_dict(), 201
+        except:
+            return {"error": "400 Failed"}, 400
+        
+    def delete(self, id):
+        try:
+            check = Check.query.filter_by(id=id).first()
+
+            db.session.delete(check)
+            db.session.commit()
+
+            return {}, 202
+        except:
+            return {"error", "404 Check not found"}, 404
+        
+api.add_resource(ChecksById, "/checks/<int:id>")
+
+# ITEM VIEWS
+class Items(Resource):
+    def get(self):
+
+        return [item.to_dict() for item in Item.query.all()], 200
+    
+api.add_resource(Items, "/items")
+
+class ItemsByCategory(Resource):
+    def get(self, cat):
+        try:
+            items = [item.to_dict() for item in Item.query.filter(Item.category == cat)]
+
+            return items, 200
+        
+        except:
+            return {"error": "404 Items not found."}, 404
+        
+api.add_resource(ItemsByCategory, "/items/<string:cat>")
+
+# ORDER VIEWS
+class Orders(Resource):
+    def get(self):
+
+        return [order.to_dict() for order in Order.query.all()], 200
+    
+    def post(self):
+        try:
+            new_order = Order(
+                item_id = request.json["item_id"],
+                check_id = request.json["check_id"],
+                seat_number = request.json["seat_number"]
+            )
+
+            db.session.add(new_order)
+            db.session.commit()
+
+            return new_order.to_dict(), 201
+        except:
+            
+            return {"error": "400 Order not acceptable"}, 400
+        
+api.add_resource(Orders, "/orders")
+
+class OrdersByCheck(Resource):
+    def get(self, id):
+        
+        try:
+            orders = [order.to_dict() for order in Order.query.filter(Order.check_id == id).all()]
+
+            return orders, 200
+        except:
+            return {"error": "404 cannot find orders"}, 404
+        
+api.add_resource(OrdersByCheck, "/orders/check/<int:id>")
 
 # Authentication Routes
 class SignUp(Resource):
