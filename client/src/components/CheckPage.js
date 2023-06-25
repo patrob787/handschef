@@ -12,10 +12,12 @@ function CheckPage() {
   const [ currentOrders, setCurrentOrders ] = useState([])
   const [ itemsSelected, setItemsSelected ] = useState([])
   const [ seat, setSeat ] = useState(1)
-  const [ seatNums, setSeatNums ] = useState([])
+  const [ seatNums, setSeatNums ] = useState([1])
   const [ reset, setReset ] = useState(false)
+  const [ checkTotal, setCheckTotal ] = useState(0)
   
   const { allItems } = useContext(MyContext)
+  console.log(check)
   
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
@@ -29,8 +31,11 @@ function CheckPage() {
           return nums.indexOf(num) === i
         })
         setSeatNums(numArray.sort())
-      } else {
-        setSeatNums([1])
+
+        const prices = data.map(i => i.item.price)
+        const total = prices.reduce((a, c) => a + c, 0)
+        
+        setCheckTotal(total)
       }
     })
   }, [reset])
@@ -40,10 +45,6 @@ function CheckPage() {
       return i.category === e.target.value
     })
     setMenu(catItems)
-    
-    // fetch(`/items/${e.target.value}`)
-    // .then(resp => resp.json())
-    // .then(items => setMenu(items))
   }
 
   function handleItemClick(e) {
@@ -80,6 +81,7 @@ function CheckPage() {
     
     const nextSeat = seatNums.length + 1
     setSeatNums([...seatNums, nextSeat])
+    setSeat(nextSeat)
   }
   
   function handleSeatClick(e) {
@@ -88,16 +90,14 @@ function CheckPage() {
   }
   
   function handleVoidClick() {
-    
     setCurrentOrders(currentOrders.filter((o) => {
       if (!itemsSelected.find((i) => {
-        return i.name === o.name
+        return i.name === o.name && i.seat_number === o.seat_number
       })) {
         return o
       }
     }))
     setItemsSelected([])
-    
   }
   
   function handlePrintClick() {
@@ -107,6 +107,8 @@ function CheckPage() {
   
   function handleSendClick() {
     
+    let prices = [];
+
     currentOrders.forEach((order) => {
       if (!Object.keys(order).includes("item")) {
         
@@ -123,8 +125,28 @@ function CheckPage() {
         .then(data => {
           setReset(!reset)
         })
+
+        prices.push(order.price)
+
       }
     })
+
+    if (prices.length > 0) {
+      console.log(prices)
+      const priceUpdate = prices.reduce((a, c) => a + c, check.total)
+      const updateTax = priceUpdate * 0.08875
+  
+      fetch(`/checks/${check.id}`, {
+        method: "PATCH",
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({
+          total: priceUpdate.toFixed(2),
+          tax: updateTax.toFixed(2) 
+        })
+      })
+      .then(resp => resp.json())
+      .then(data => setCheck(data))
+    }
   }
   
   function handleExitClick() {
@@ -167,15 +189,22 @@ function CheckPage() {
       <div className="order-page">
         
         <div className="order-info">
-          <h3>Table {check.table_number}</h3>
-          
-          <div className="seats">
-            {/* <button value={"All"} onClick={handleSeatClick}>All</button> */}
-            {renderSeatButtons}
+          <div>
+            <h3>Table {check.table_number}</h3>
+            
+            <div className="seats">
+              {/* <button value={"All"} onClick={handleSeatClick}>All</button> */}
+              {renderSeatButtons}
+            </div>
+            
+            <div className="check-detail">
+              {renderSeats}
+            </div>
           </div>
-          
-          <div className="check-detail">
-            {renderSeats}
+
+          <div className="order-total">
+            <p>Total:</p>
+            <p>${checkTotal.toFixed(2)}</p>
           </div>
         </div>
         
