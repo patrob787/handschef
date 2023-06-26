@@ -63,6 +63,7 @@ function CheckPage() {
   }
 
   function handleOrdersSelected(item) {
+    console.log(itemsSelected)
     setItemsSelected([...itemsSelected, item])
   }
   
@@ -72,6 +73,27 @@ function CheckPage() {
           return i
         }
     }))
+  }
+
+  console.log(itemsSelected)
+  function deselectAll(e) {
+    console.log(e.target.parentNode.className)
+    if (
+      e.target.parentNode.className !== "order-row order-select" &&
+      e.target.parentNode.className !== "order-row" &&
+      e.target.parentNode.className !== "seat-div"
+      ) {
+          const selected = document.querySelectorAll(".order-select")
+          
+          selected.forEach((i) => {
+            i.classList.remove("order-select")
+          })
+          setItemsSelected([])
+          console.log("event fired")
+    } else {
+
+      console.log("event didn't fire")
+    }
   }
 
   
@@ -165,7 +187,6 @@ function CheckPage() {
     })
 
     if (prices.length > 0) {
-      console.log(prices)
       const priceUpdate = prices.reduce((a, c) => a + c, check.total)
       const updateTax = priceUpdate * 0.08875
   
@@ -208,7 +229,7 @@ function CheckPage() {
     return (
       <Seat 
         key={num} 
-        orders={currentOrders} 
+        orders={currentOrders}
         seatNumber={num} 
         onSelected={handleOrdersSelected} 
         onDeselected={handleOrdersDeselected} 
@@ -221,7 +242,7 @@ function CheckPage() {
     <div className="check-page">
       <div className="order-page">
         
-        <div className="order-info">
+        <div className="order-info" onClick={deselectAll}>
           <div>
             <h3>Table {check.table_number}</h3>
             
