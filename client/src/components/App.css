@@ -87,6 +87,7 @@ button {
 .order-info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     background-color: white;
     width: 30%;
     height: 80vh;
@@ -204,4 +205,15 @@ button {
 .seat-div h4 {
     text-decoration: underline;
     font-style: italic;
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    border-top: 2px solid black;
+}
+
+.order-total p {
+    margin-right: 5px;
+    margin-left: 5px;
 }
