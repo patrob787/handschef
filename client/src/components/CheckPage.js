@@ -75,9 +75,7 @@ function CheckPage() {
     }))
   }
 
-  console.log(itemsSelected)
   function deselectAll(e) {
-    console.log(e.target.parentNode.className)
     if (
       e.target.parentNode.className !== "order-row order-select" &&
       e.target.parentNode.className !== "order-row" &&
@@ -89,10 +87,7 @@ function CheckPage() {
             i.classList.remove("order-select")
           })
           setItemsSelected([])
-          console.log("event fired")
-    } else {
-
-      console.log("event didn't fire")
+          
     }
   }
 
