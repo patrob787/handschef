@@ -17,7 +17,7 @@ function CheckPage() {
   const [ checkTotal, setCheckTotal ] = useState(0)
   
   const { allItems } = useContext(MyContext)
-  console.log(check)
+  // console.log(check)
   
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
@@ -87,6 +87,39 @@ function CheckPage() {
   function handleSeatClick(e) {
     
     setSeat(parseInt(e.target.value))
+  }
+
+  function handleRepeat() {
+    if (itemsSelected.length > 0) {
+      itemsSelected.forEach((i) => {
+        if (Object.keys(i).includes("item")) {
+
+          const itemCopy = {
+            id: i.item.id,
+            name: i.item.name,
+            price: i.item.price,
+            seat_number: i.seat_number,
+            staged: true
+          }
+          
+          setCurrentOrders([...currentOrders, itemCopy])
+        } else {
+          
+          const itemCopy = {
+            id: i.id,
+            name: i.name,
+            price: i.price,
+            seat_number: i.seat_number,
+            staged: true
+          }
+          
+          setCurrentOrders([...currentOrders, itemCopy])
+        }
+        
+      })
+    } else {
+      console.log("Nothing to repeat")
+    }
   }
   
   function handleVoidClick() {
@@ -221,6 +254,7 @@ function CheckPage() {
         <button>Pay</button>
         <button>Edit Seats</button>
         <button onClick={addSeatClick}>Add Seat</button>
+        <button onClick={handleRepeat}>Repeat</button>
         <button onClick={handleVoidClick}>Void</button>
         <button onClick={handlePrintClick}>Print Check</button>
         <button onClick={handleSendClick}>Send</button>

@@ -28,8 +28,8 @@ function Order({ order, onSelected, onDeselected }) {
 
   return (
     <div className={order.staged ? "order-staged" : "order-row"} onClick={handleOrderClick}>
-      <p>{order.name}</p>
-      <p>${order.price}</p>
+      <p>{Object.keys(order).includes("item") ? order.item.name : order.name}</p>
+      <p>${Object.keys(order).includes("item") ? order.item.price : order.price}</p>
     </div>
   )
 }

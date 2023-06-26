@@ -11,20 +11,13 @@ function Seat({ orders, seatNumber, onSelected, onDeselected }) {
 
     const renderOrders = seatOrders.map((order) => {
         return (
-            Object.keys(order).includes("item") ? 
-                <Order 
-                    key={order.id} 
-                    order={order.item} 
-                    onSelected={onSelected} 
-                    onDeselected={onDeselected} 
-                /> :
-                <Order 
-                    key={order.name} 
-                    order={order} 
-                    onSelected={onSelected} 
-                    onDeselected={onDeselected} 
-                />
-            )
+            <Order 
+                key={order.id} 
+                order={order} 
+                onSelected={onSelected} 
+                onDeselected={onDeselected} 
+            />
+        )
     })
 
     return (
