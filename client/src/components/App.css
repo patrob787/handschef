@@ -213,7 +213,26 @@ button {
     border-top: 2px solid black;
 }
 
-.order-total p {
+.total-detail {
+    border-top: 2px solid black;
+}
+
+.total-line {
+    display: flex;
+    justify-content: space-between;
     margin-right: 5px;
     margin-left: 5px;
+}
+
+.total-line p {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.payment-options {
+    background-color: rgb(164, 164, 244);
+    height: 80vh;
+    width: 30%;
+    margin: 10px;
+    border: 1px solid black;
 }

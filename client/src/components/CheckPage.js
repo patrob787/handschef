@@ -17,7 +17,7 @@ function CheckPage() {
   const [ checkTotal, setCheckTotal ] = useState(0)
   
   const { allItems } = useContext(MyContext)
-  // console.log(check)
+  console.log(check)
   
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
@@ -93,6 +93,10 @@ function CheckPage() {
 
   
   // BOTTOM MENU BUTTONS
+  
+  function handlePay() {
+    navigate(`/payment/check/${check.id}`, { state: check })
+  }
   
   function addSeatClick() {
     
@@ -267,7 +271,7 @@ function CheckPage() {
       </div>
 
       <div className="option-btn-container">
-        <button>Pay</button>
+        <button onClick={handlePay}>Pay</button>
         <button>Edit Seats</button>
         <button onClick={addSeatClick}>Add Seat</button>
         <button onClick={handleRepeat}>Repeat</button>
