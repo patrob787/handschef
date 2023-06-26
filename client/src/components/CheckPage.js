@@ -75,21 +75,21 @@ function CheckPage() {
     }))
   }
 
-  function deselectAll(e) {
-    if (
-      e.target.parentNode.className !== "order-row order-select" &&
-      e.target.parentNode.className !== "order-row" &&
-      e.target.parentNode.className !== "seat-div"
-      ) {
-          const selected = document.querySelectorAll(".order-select")
+  // function deselectAll(e) {
+  //   if (
+  //     e.target.parentNode.className !== "order-row order-select" &&
+  //     e.target.parentNode.className !== "order-row" &&
+  //     e.target.parentNode.className !== "seat-div"
+  //     ) {
+  //         const selected = document.querySelectorAll(".order-select")
           
-          selected.forEach((i) => {
-            i.classList.remove("order-select")
-          })
-          setItemsSelected([])
+  //         selected.forEach((i) => {
+  //           i.classList.remove("order-select")
+  //         })
+  //         setItemsSelected([])
           
-    }
-  }
+  //   }
+  // }
 
   
   // BOTTOM MENU BUTTONS
@@ -237,7 +237,7 @@ function CheckPage() {
     <div className="check-page">
       <div className="order-page">
         
-        <div className="order-info" onClick={deselectAll}>
+        <div className="order-info">
           <div>
             <h3>Table {check.table_number}</h3>
             
