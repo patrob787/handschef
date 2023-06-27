@@ -236,3 +236,11 @@ button {
     margin: 10px;
     border: 1px solid black;
 }
+
+.payment {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: .75rem;
+    font-style: italic;
+}

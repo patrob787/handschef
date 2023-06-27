@@ -10,22 +10,32 @@ function PaymentPage() {
   const [ check, setCheck ] = useState(location.state)
   const [ orders, setOrders ] = useState(location.state.orders)
   const [ due, setDue ] = useState((check.total + check.tax).toFixed(2))
-  const [ amountOwed, setAmountOwed ] = useState(due)
+  const [ calcValue, setCalcValue ] = useState("")
+  const [ payments, setPayments ] = useState([])
   
   console.log(orders)
 
-  let renderPayment;
+  function handleCalcValue(value) {
+    setCalcValue(value)
+  }
   
   function handleCardAuth() {
     const lastFour = prompt("Enter the last four digits of your CC")
 
     console.log("authorizing", lastFour)
-    setDue(due - amountOwed)
-    renderPayment =
-      <div>
-        <p>xxxxxxxx{lastFour}</p>
-        <p>${amountOwed}</p>
-      </div>
+
+    if (parseFloat(calcValue) && parseFloat(calcValue) > 0) {
+      setDue((due - parseFloat(calcValue)).toFixed(2))
+      
+      const newPayment = {card: `x${lastFour}`, charge: calcValue}
+      setPayments([...payments, newPayment])
+    } else {
+      setDue((due - due).toFixed(2))
+      
+      const newPayment = {card: `x${lastFour}`, charge: due}
+      setPayments([...payments, newPayment])
+    }
+    setCalcValue("")
   }
   
   // BOTTOM MENU BUTTONS
@@ -37,6 +47,14 @@ function PaymentPage() {
     return <Order order={o} />
   })
  
+  const renderPayments = payments.map((p) => {
+    return(
+      <div class="payment">
+        <p>Authorized {p.card}</p>
+        <p>${parseFloat(p.charge).toFixed(2)}</p>
+      </div>
+    )
+  })
   
   return (
     <div>
@@ -47,8 +65,8 @@ function PaymentPage() {
             <h3>Table {check.table_number}</h3>
             
             <div className="check-detail">
-              {renderPayment}
               {renderOrders}
+              {renderPayments}
             </div>
           </div>
 
@@ -80,7 +98,7 @@ function PaymentPage() {
           <button>Apply Discount</button>
           <button>???</button>
         </div>
-        <Calculator />
+        <Calculator calc={calcValue} onCalc={handleCalcValue} />
       </div>
 
       <div className="option-btn-container">
