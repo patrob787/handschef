@@ -1,6 +1,7 @@
 body {
     background-color: burlywood;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    max-height: 100vh;
 }
 
 button {
@@ -172,6 +173,16 @@ button {
     background-color: crimson;
     font-size: 130%;
     font-weight: bold;
+    margin: 3px;
+}
+
+.mod-btn {
+    width: 200px;
+    height: 100px;
+    background-color:darkseagreen;
+    font-size: 130%;
+    font-weight: bold;
+    font-style: italic;
     margin: 3px;
 }
 

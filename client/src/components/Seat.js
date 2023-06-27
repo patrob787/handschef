@@ -22,7 +22,7 @@ function Seat({ orders, seatNumber, onSelected, onDeselected }) {
 
     return (
         <div className="seat-div">
-            <h4>Seat {seatNumber}</h4>
+            {seatNumber === 0 ? <h4>All</h4> : <h4>Seat {seatNumber}</h4>}
             {renderOrders}
         </div>
     )

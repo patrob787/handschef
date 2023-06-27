@@ -8,17 +8,24 @@ function CheckPage() {
   const navigate = useNavigate()
   
   const [ check, setCheck ] = useState(location.state)
-  const [ menu, setMenu ] = useState([])
+  // const [ menu, setMenu ] = useState([])
   const [ currentOrders, setCurrentOrders ] = useState([])
   const [ itemsSelected, setItemsSelected ] = useState([])
+  
   const [ seat, setSeat ] = useState(1)
-  const [ seatNums, setSeatNums ] = useState([1])
+  const [ seatNums, setSeatNums ] = useState([0, 1])
+  
   const [ reset, setReset ] = useState(false)
   const [ checkTotal, setCheckTotal ] = useState(0)
+
+  const [ itemBtns, setItemBtns ] = useState([])
+  const [ toggleMod, setToggleMod ] = useState(false)
+  const [ modifier, setModifier ] = useState("")
   
   const { allItems } = useContext(MyContext)
-  console.log(check)
   
+  console.log(currentOrders)
+
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
     .then(resp => resp.json())
@@ -44,11 +51,24 @@ function CheckPage() {
     const catItems = allItems.filter((i) => {
       return i.category === e.target.value
     })
-    setMenu(catItems)
+    // setMenu(catItems)
+    const buttons = catItems.map((item) => {
+        return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
+      })
+      setItemBtns(buttons)
   }
 
   function handleItemClick(e) {
     const item = allItems.find(i => i.button_name === e.target.value)
+    const subItems = item.item_mods
+
+    if (subItems.length > 0) {
+      const buttons = subItems.map((i) => {
+        return <button className="item-btn" value={i.sub_item.button_name} onClick={handleSubClick}>{i.sub_item.button_name}</button>
+      })
+      setItemBtns(buttons)
+      setToggleMod(true)
+    }
 
     const itemCopy = {
       id: item.id,
@@ -58,8 +78,15 @@ function CheckPage() {
       staged: true
     }
     
-
     setCurrentOrders([...currentOrders, itemCopy])
+  }
+
+  function handleModClick(e) {
+    console.log(e.target.value)
+  }
+
+  function handleSubClick(e) {
+    console.log(e.target.value)
   }
 
   function handleOrdersSelected(item) {
@@ -152,6 +179,8 @@ function CheckPage() {
       }
     }))
     setItemsSelected([])
+    setItemBtns([])
+    setToggleMod(false)
   }
   
   function handlePrintClick() {
@@ -200,6 +229,8 @@ function CheckPage() {
       .then(resp => resp.json())
       .then(data => setCheck(data))
     }
+    setItemBtns([])
+    setToggleMod(false)
   }
   
   function handleExitClick() {
@@ -213,17 +244,19 @@ function CheckPage() {
     return <button className="cat-btn" value={cat} onClick={handleCatClick}>{cat}</button>
   })
   
-  const itemBtns = menu.map((item) => {
-    return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
-  }) 
+
+  const modOptions = ["No", "On Side", "Extra"]
+
+  const modButtons = modOptions.map((o) => {
+    return <button value={o} className="mod-btn" onClick={handleModClick}>{o}</button>
+  })
   
   const renderSeatButtons = seatNums.map((num) => {
     return(
-      <button value={num} onClick={handleSeatClick} className={seat === num ? "seat-select" : "seat-neutral"}>Seat {num}</button>
+      <button value={num} onClick={handleSeatClick} className={seat === num ? "seat-select" : "seat-neutral"}>{num === 0 ? "All" : `Seat ${num}`}</button>
       )
     })
     
-  
   const renderSeats = seatNums.map((num) => {
     return (
       <Seat 
@@ -236,7 +269,8 @@ function CheckPage() {
     )
   })
   
-  
+  // COMPONENT IS DOWN HERE!
+
   return (
     <div className="check-page">
       <div className="order-page">
@@ -246,7 +280,6 @@ function CheckPage() {
             <h3>Table {check.table_number}</h3>
             
             <div className="seats">
-              {/* <button value={"All"} onClick={handleSeatClick}>All</button> */}
               {renderSeatButtons}
             </div>
             
@@ -262,6 +295,9 @@ function CheckPage() {
         </div>
         
         <div className="menu-int">
+          <div>
+            { toggleMod ? modButtons : null }
+          </div>
           {itemBtns}
         </div>
         
