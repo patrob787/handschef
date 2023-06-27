@@ -46,12 +46,18 @@ function Home() {
     }
   }
 
+  function handleAllOpen() {
+    fetch("/checks")
+    .then(resp => resp.json())
+    .then(data => setUserChecks(data))
+  }
+
   return (
     <div className="home-container">
       <CheckContainer userChecks={userChecks} />
       <div className="option-container">
         <button onClick={handleNewCheck}>New Check</button>
-        <button>All Open Checks</button>
+        <button onClick={handleAllOpen}>All Open Checks</button>
         <button>Menu</button>
         <button>Options</button>
         <button>Report</button>
