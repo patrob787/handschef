@@ -72,7 +72,7 @@ if __name__ == '__main__':
         make_item("New York Lox", "Lox", "https://images.otstatic.com/prod1/30615159/3/large.jpg", 28, False, "mornings", "brunch")
         make_item("Avocado Toast", "Avocado Toast", "https://s3-media0.fl.yelpcdn.com/bphoto/ZkAS-DW--MaK6JO1aBtmJA/348s.jpg", 20, False, "mornings", "brunch")
         make_item("Fruit Plate", "Fruit", None, 6, False, "mornings", "brunch")
-        make_item("Side Scrambe", "Side Scramble", None, 12, True, "mornings", "brunch")
+        make_item("Side Scramble", "Side Scramble", None, 12, True, "mornings", "brunch")
         
         # Appetizers
         make_item("Artisanal Prosciutto", "Prosciutto", "https://www.biteofthebest.com/wp-content/uploads/IMG_7460-scaled.jpeg", 24, False, "appetizers", "all")

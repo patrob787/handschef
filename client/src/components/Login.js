@@ -10,16 +10,16 @@ function Login({ onLogin }) {
     }
 
   return (
-    <div>
-        <div>
+    <div className="login-container">
+        <div className="login-form">
             { displayLogin ? <LoginForm onLogin={onLogin} /> : <SignUpForm onSignup={onDisplayClick} /> }
         </div>
         { displayLogin ? 
-            <div>
+            <div className="signup">
                 <p>Don't have an account?</p>
                 <button onClick={onDisplayClick}>Sign Up</button>
             </div> :
-            <div>
+            <div className="signup">
                 <p>Already have an account?</p>
                 <button onClick={onDisplayClick}>Back to Login</button>
             </div>

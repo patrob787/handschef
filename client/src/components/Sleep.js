@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Calculator from './Calculator'
 
 
 function Sleep({ user, onSleep }) {
@@ -15,13 +16,17 @@ function Sleep({ user, onSleep }) {
         }
     }
 
+    function handleCalc(value) {
+        setNumber(value)
+    }
+
     return (
-    <div>
-        <form onSubmit={handleSubmit}>
-            <label>Enter Employee Number</label><br></br>
-            <input type="text" value={number} onChange={(e) => {setNumber(e.target.value)}}></input><br></br>
-            <button>Enter</button>
-        </form>
+    <div className="login-container">
+        <h1>Enter Employee Number</h1>
+        <div>
+            <Calculator calc={number} onCalc={handleCalc}/>
+            <button className="login-btn" onClick={handleSubmit}>Enter</button>
+        </div>
     </div>
   )
 }

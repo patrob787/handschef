@@ -57,7 +57,7 @@ function SignUpForm({ onSignup }) {
                 placeholder='first name' 
                 value={first} 
                 onChange={(e) => {setFirst(e.target.value)}} 
-            /><br></br>
+            /><br></br><br></br>
 
             <label>Last Name</label><br></br>
             <input 
@@ -65,7 +65,7 @@ function SignUpForm({ onSignup }) {
                 placeholder='last name' 
                 value={last} 
                 onChange={(e) => {setLast(e.target.value)}} 
-            /><br></br>
+            /><br></br><br></br>
 
             <label>Set Employee Number</label><br></br>
             <input 
@@ -73,7 +73,7 @@ function SignUpForm({ onSignup }) {
                 placeholder='Enter a six digit number' 
                 value={empNum} 
                 onChange={(e) => {setEmpNum(e.target.value)}} 
-            /><br></br>
+            /><br></br><br></br>
 
             <label>Confirm Employee Number</label><br></br>
             <input 
@@ -81,7 +81,7 @@ function SignUpForm({ onSignup }) {
                 placeholder='Re-Enter same six digit number' 
                 value={empConfirm} 
                 onChange={(e) => {setEmpConfirm(e.target.value)}} 
-            /><br></br>
+            /><br></br><br></br>
 
             <label>Set Password</label><br></br>
             <input 
@@ -89,7 +89,7 @@ function SignUpForm({ onSignup }) {
                 placeholder='Enter Password' 
                 value={password} 
                 onChange={(e) => {setPassword(e.target.value)}} 
-            /><br></br>
+            /><br></br><br></br>
 
             <label>Confirm Password</label><br></br>
             <input 
@@ -97,7 +97,7 @@ function SignUpForm({ onSignup }) {
                 placeholder='Re-enter Password' 
                 value={passwordConfirm} 
                 onChange={(e) => {setPasswordConfirm(e.target.value)}}
-            /><br></br>
+            /><br></br><br></br>
 
             <button>Submit</button><br></br><br></br>
 

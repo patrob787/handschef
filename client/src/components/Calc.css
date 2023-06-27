@@ -1,0 +1,41 @@
+.calc-container {
+    height: 60vh;
+    width: 100%;
+    background-color: rgb(164, 164, 244);
+    border: 2px solid black;
+}
+
+.calc-head {
+    display: flex;
+    height: 20%;
+}
+
+.calc-display {
+    width: 70%;
+    background-color: white;
+    border: 1px solid black;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 1.75rem;
+    padding: 5px;
+}
+
+.calc-head button {
+    width: 30%;
+    font-size: larger;
+}
+
+.calc-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    height: 80%;
+}
+
+.calc-buttons button {
+    width: 33%;
+    height: 25%;
+    background-color: darksalmon;
+    font-size: larger;
+}
