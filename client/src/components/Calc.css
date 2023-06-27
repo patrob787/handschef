@@ -18,6 +18,7 @@
     justify-content: flex-end;
     align-items: center;
     font-size: 1.75rem;
+    padding: 5px;
 }
 
 .calc-head button {

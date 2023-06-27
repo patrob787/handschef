@@ -11,6 +11,7 @@ function PaymentPage() {
   const [ orders, setOrders ] = useState(location.state.orders)
   const [ due, setDue ] = useState((check.total + check.tax).toFixed(2))
   const [ calcValue, setCalcValue ] = useState("")
+  const [ split, setSplit ] = useState([])
   const [ payments, setPayments ] = useState([])
   
   console.log(orders)
@@ -33,6 +34,21 @@ function PaymentPage() {
       setDue((due - due).toFixed(2))
       
       const newPayment = {card: `x${lastFour}`, charge: due}
+      setPayments([...payments, newPayment])
+    }
+    setCalcValue("")
+  }
+
+  function handleCash() {
+    if (parseFloat(calcValue) && parseFloat(calcValue) > 0) {
+      setDue((due - parseFloat(calcValue)).toFixed(2))
+      
+      const newPayment = {card: "CASH", charge: calcValue}
+      setPayments([...payments, newPayment])
+    } else {
+      setDue((due - due).toFixed(2))
+      
+      const newPayment = {card: "CASH", charge: due}
       setPayments([...payments, newPayment])
     }
     setCalcValue("")
@@ -110,7 +126,7 @@ function PaymentPage() {
 
         <div className="payment-options">
           <button onClick={handleCardAuth}>Card Auth</button>
-          <button>Cash</button>
+          <button onClick={handleCash}>Cash</button>
           <button>Split Payment</button>
           <button>Split by Seat</button>
           <button>Apply Discount</button>
@@ -121,7 +137,7 @@ function PaymentPage() {
 
       <div className="option-btn-container">
         <button onClick={handleCloseCheck}>Close Check</button>
-        <button>?</button>
+        <button>Void Payment</button>
         <button>?</button>
         <button>?</button>
         <button>Edit Checks</button>
