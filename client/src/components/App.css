@@ -288,6 +288,11 @@ button {
     background-color: rgb(67, 236, 67);
 }
 
+.payment-calc {
+    width: 30%;
+    height: 100%;
+}
+
 .payment {
     display: flex;
     justify-content: space-between;

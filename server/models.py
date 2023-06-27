@@ -87,6 +87,7 @@ class Check(db.Model, SerializerMixin):
     table_number = db.Column(db.Integer, default=999)
     total = db.Column(db.Float, default=0)
     tax = db.Column(db.Float, default=0)
+    gratuity = db.Column(db.Float, default=0)
     paid = db.Column(db.Boolean, default=False)
 
     created_at = db.Column(db.DateTime, server_default=db.func.now())

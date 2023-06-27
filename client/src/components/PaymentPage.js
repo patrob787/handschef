@@ -181,7 +181,10 @@ function PaymentPage() {
           <button>Apply Discount</button>
           <button>Add Gratuity</button>
         </div>
-        <Calculator calc={calcValue} onCalc={handleCalcValue} />
+        
+        <div className="payment-calc">
+          <Calculator calc={calcValue} onCalc={handleCalcValue} />
+        </div>
       </div>
 
       <div className="option-btn-container">
