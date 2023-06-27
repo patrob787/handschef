@@ -13,13 +13,13 @@ function PaymentPage() {
   
   const [ due, setDue ] = useState((check.total + check.tax).toFixed(2))
   const [ calcValue, setCalcValue ] = useState("")
+  const [ payments, setPayments ] = useState([])
   
   const [ split, setSplit ] = useState([])
-  const [ payments, setPayments ] = useState([])
   const [ paymentCount, setPaymentCount ] = useState(0)
   const [ ofPayment, setOfPayment ] = useState(0)
   
-  console.log(orders)
+  console.log(due, split, paymentCount, ofPayment)
 
   function handleCalcValue(value) {
     setCalcValue(value)
@@ -28,6 +28,7 @@ function PaymentPage() {
   useEffect(() => {
     if (split.length > 0) {
       setDue(split[0])
+      console.log(split)
     } 
   }, [split])
 
@@ -48,6 +49,16 @@ function PaymentPage() {
       const newPayment = {card: `x${lastFour}`, charge: due}
       setPayments([...payments, newPayment])
     }
+
+    if (split.length > 1) {
+      split.shift()
+      console.log(split)
+      setDue(split[0])
+      setPaymentCount(paymentCount + 1)
+    } else {
+      setDue(0)
+    }
+
     setCalcValue("")
   }
 
@@ -88,6 +99,7 @@ function PaymentPage() {
       setSplit(payments)
       setPaymentCount(1)
       setOfPayment(payments.length)
+      setCalcValue("")
     }
   }
   

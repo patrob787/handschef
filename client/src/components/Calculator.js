@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import "./Calc.css"
 
 function Calculator({ calc, onCalc }) {
-    // const [ value, setValue ] = useState("")
-    console.log(calc)
+    
     function onCalcClick(e){
         if (e.target.value === "clear") {
             onCalc("")

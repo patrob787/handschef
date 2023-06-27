@@ -1,10 +1,12 @@
 import React, { useState, useEffect, createContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Login from './Login'
 import Sleep from './Sleep'
 
 export const MyContext = createContext()
 
 function MyProvider({ children }) {
+    const navigate = useNavigate()
 
     // All Items
     const [ allItems, setAllItems ] = useState([])
@@ -43,6 +45,9 @@ function MyProvider({ children }) {
     const [sleep, setSleep] = useState(false)
 
     function onSleep() {
+        if (sleep) {
+            navigate("/")
+        }
         setSleep(!sleep)
     }
     
