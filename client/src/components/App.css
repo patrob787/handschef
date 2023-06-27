@@ -235,6 +235,16 @@ button {
     width: 30%;
     margin: 10px;
     border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.payment-options button {
+    width: 45%;
+    height: 20%;
+    background-color: rgb(67, 236, 67);
 }
 
 .payment {

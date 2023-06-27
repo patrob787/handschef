@@ -39,6 +39,24 @@ function PaymentPage() {
   }
   
   // BOTTOM MENU BUTTONS
+  function handleCloseCheck() {
+    if (parseFloat(due) === 0) {
+      fetch(`/checks/${check.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          paid: true
+        })
+      })
+      .then(resp => resp.json())
+      .then(() => {navigate("/")})
+    } else {
+      alert(`There is still $${due} remaining on this check`)
+    }
+  }
+  
   function handleBack() {
     navigate(`/check/${check.id}`, { state: check })
   }
@@ -96,13 +114,13 @@ function PaymentPage() {
           <button>Split Payment</button>
           <button>Split by Seat</button>
           <button>Apply Discount</button>
-          <button>???</button>
+          <button>Add Gratuity</button>
         </div>
         <Calculator calc={calcValue} onCalc={handleCalcValue} />
       </div>
 
       <div className="option-btn-container">
-        <button>Close Check</button>
+        <button onClick={handleCloseCheck}>Close Check</button>
         <button>?</button>
         <button>?</button>
         <button>?</button>
