@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Order from './Order'
 import Calculator from './Calculator'
@@ -7,18 +7,30 @@ function PaymentPage() {
 
   const location = useLocation()
   const navigate = useNavigate()
+  
   const [ check, setCheck ] = useState(location.state)
   const [ orders, setOrders ] = useState(location.state.orders)
+  
   const [ due, setDue ] = useState((check.total + check.tax).toFixed(2))
   const [ calcValue, setCalcValue ] = useState("")
+  
   const [ split, setSplit ] = useState([])
   const [ payments, setPayments ] = useState([])
+  const [ paymentCount, setPaymentCount ] = useState(0)
+  const [ ofPayment, setOfPayment ] = useState(0)
   
   console.log(orders)
 
   function handleCalcValue(value) {
     setCalcValue(value)
   }
+
+  useEffect(() => {
+    if (split.length > 0) {
+      setDue(split[0])
+    } 
+  }, [split])
+
   
   function handleCardAuth() {
     const lastFour = prompt("Enter the last four digits of your CC")
@@ -52,6 +64,31 @@ function PaymentPage() {
       setPayments([...payments, newPayment])
     }
     setCalcValue("")
+  }
+
+  function handleSplitPay() {
+    let payments = []
+    let total = due
+    let split = calcValue
+
+    if (parseFloat(calcValue) && parseFloat(calcValue) > 0) {
+      while (split > 0) {
+        
+        let payment = (total / split)
+
+        if ((total - payment) < 0) {
+          payment = payment - .01
+        }
+
+        payments.push(payment.toFixed(2))
+        total = total - payment.toFixed(2)
+        split--
+      }
+
+      setSplit(payments)
+      setPaymentCount(1)
+      setOfPayment(payments.length)
+    }
   }
   
   // BOTTOM MENU BUTTONS
@@ -119,7 +156,7 @@ function PaymentPage() {
             </div>
             <div className="total-line">
               <h2>DUE:</h2>
-              <h2>${due}</h2>
+              {split.length > 0 ? <h2>${due} / {paymentCount} of {ofPayment}</h2> : <h2>${due}</h2>}
             </div>
           </div>
         </div>
@@ -127,7 +164,7 @@ function PaymentPage() {
         <div className="payment-options">
           <button onClick={handleCardAuth}>Card Auth</button>
           <button onClick={handleCash}>Cash</button>
-          <button>Split Payment</button>
+          <button onClick={handleSplitPay}>Split Payment</button>
           <button>Split by Seat</button>
           <button>Apply Discount</button>
           <button>Add Gratuity</button>
