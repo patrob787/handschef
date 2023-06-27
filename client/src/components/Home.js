@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 function Home() {
   const { user } = useContext(MyContext)
   const [ userChecks, setUserChecks ] = useState([])
+  const [ toggleAll, setToggleAll ] = useState(false)
 
   const navigate = useNavigate()
 
@@ -15,6 +16,7 @@ function Home() {
     .then(data => setUserChecks(data))
   }, [])
 
+  console.log(userChecks)
 
   function updateChecks(newCheck) {
     const checks = [...userChecks, newCheck]
@@ -47,9 +49,15 @@ function Home() {
   }
 
   function handleAllOpen() {
-    fetch("/checks")
-    .then(resp => resp.json())
-    .then(data => setUserChecks(data))
+    if (!toggleAll) {
+      fetch("/checks")
+      .then(resp => resp.json())
+      .then(data => setUserChecks(data))
+    } else {
+      console.log(user.checks)
+      setUserChecks(user.checks)
+    }
+    setToggleAll(!toggleAll)
   }
 
   return (
@@ -57,7 +65,7 @@ function Home() {
       <CheckContainer userChecks={userChecks} />
       <div className="option-container">
         <button onClick={handleNewCheck}>New Check</button>
-        <button onClick={handleAllOpen}>All Open Checks</button>
+        <button onClick={handleAllOpen}>{toggleAll ? "My Checks" : "All Checks"}</button>
         <button>Menu</button>
         <button>Options</button>
         <button>Report</button>

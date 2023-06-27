@@ -13,8 +13,8 @@ function CheckCard({ check }) {
     <div className="check-card" onClick={handleCardClick}>
       <h1>{check.table_number}</h1>
       <p>Check #: {check.id}</p>
-      <p>Server: {check.user.first_name}</p>
       <p>${check.total.toFixed(2)}</p>
+      {Object.keys(check).includes("user") ? <p>Server: {check.user.first_name.toUpperCase()}</p> : null}
     </div>
   )
 }
