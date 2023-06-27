@@ -25,21 +25,25 @@ function Home() {
   function handleNewCheck() {
     let table = prompt("Enter Table Number")
     
-    fetch("/checks", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        user_id: user.id,
-        table_number: table
-      }),
-    })
-    .then(resp => resp.json())
-    .then(data => {
-      updateChecks(data)
-      navigate(`/check/${data.id}`, { state: data })
-    })
+    if (table && parseInt(table) !== 0) {
+      fetch("/checks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          table_number: table
+        }),
+      })
+      .then(resp => resp.json())
+      .then(data => {
+        updateChecks(data)
+        navigate(`/check/${data.id}`, { state: data })
+      })
+    } else {
+      alert("You must enter a valid table number.")
+    }
   }
 
   return (
