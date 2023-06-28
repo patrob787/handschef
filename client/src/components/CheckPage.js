@@ -20,7 +20,8 @@ function CheckPage() {
 
   const [ itemBtns, setItemBtns ] = useState([])
   const [ toggleMod, setToggleMod ] = useState(false)
-  const [ modifier, setModifier ] = useState("")
+  const [ stagedItem, setStagedItem ] = useState({})
+  const [ modMessage, setModMessage ] = useState("")
   
   const { allItems } = useContext(MyContext)
   
@@ -52,42 +53,70 @@ function CheckPage() {
       return i.category === e.target.value
     })
     // setMenu(catItems)
-    const buttons = catItems.map((item) => {
-        return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
-      })
-      setItemBtns(buttons)
+    // const buttons = catItems.map((item) => {
+    //     return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
+    //   })
+      setItemBtns(catItems)
+      setToggleMod(false)
   }
 
   function handleItemClick(e) {
-    const item = allItems.find(i => i.button_name === e.target.value)
-    const subItems = item.item_mods
+    if (!toggleMod) {
 
-    if (subItems.length > 0) {
-      const buttons = subItems.map((i) => {
-        return <button className="item-btn" value={i.sub_item.button_name} onClick={handleSubClick}>{i.sub_item.button_name}</button>
-      })
-      setItemBtns(buttons)
-      setToggleMod(true)
-    }
+      const item = allItems.find(i => i.button_name === e.target.value)
+      
+      if (item.item_mods.length > 0) {
+        let subItems = []
+        
+        item.item_mods.forEach((sub) => {
+          subItems.push(sub.sub_item)
+        })
 
-    const itemCopy = {
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      seat_number: seat,
-      staged: true
+        setItemBtns(subItems)
+        setToggleMod(true)
+      }
+
+      const itemCopy = {
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        seat_number: seat,
+        modifiers: [],
+        staged: true
+      }
+      
+      setCurrentOrders([...currentOrders, itemCopy])
+      setStagedItem(itemCopy)
+    } else {
+      console.log(stagedItem)
+
+      const parentItem = allItems.find(i => i.id === stagedItem.id)
+      const mod = parentItem.item_mods.find(m => m.sub_item.button_name === e.target.value)
+      
+      const modifier = {
+        id: mod.sub_item.id,
+        name: mod.sub_item.name,
+        message: modMessage
+      }
+      stagedItem.modifiers.push(modifier)
+      console.log(stagedItem)
+      const modifiedOrders = currentOrders.slice(0, -1)
+      modifiedOrders.push(stagedItem)
+      
+      setCurrentOrders(modifiedOrders)
     }
     
-    setCurrentOrders([...currentOrders, itemCopy])
   }
+  
+
+  const itemButtons = itemBtns.map((i) => {
+    return <button className="item-btn" value={i.button_name} onClick={handleItemClick}>{i.button_name}</button>
+  })
 
   function handleModClick(e) {
-    console.log(e.target.value)
+    setModMessage(e.target.value)
   }
 
-  function handleSubClick(e) {
-    console.log(e.target.value)
-  }
 
   function handleOrdersSelected(item) {
     console.log(itemsSelected)
@@ -298,7 +327,7 @@ function CheckPage() {
           <div>
             { toggleMod ? modButtons : null }
           </div>
-          {itemBtns}
+          {itemButtons}
         </div>
         
         <div className="menu-btn-container">
