@@ -192,7 +192,7 @@ function CheckPage() {
     setToggleMod(false)
     setItemBtns([])
   }
-  console.log(itemsSelected)
+  
   function handleRepeat() {
     if (itemsSelected.length > 0) {
       itemsSelected.forEach((i) => {
@@ -262,7 +262,23 @@ function CheckPage() {
         })
         .then(resp => resp.json())
         .then(data => {
-          setReset(!reset)
+          // setReset(!reset)
+          console.log(order)
+          if (order.modifiers.length > 0) {
+            order.modifiers.forEach((m) => {
+              fetch("/modifiers", {
+                method: "POST",
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify({
+                  order_id: data.id,
+                  sub_item_id: m.id,
+                  message: m.message
+                })
+              })
+              .then(resp => resp.json())
+              .then(data => console.log(data))
+            })
+          }
         })
 
         prices.push(order.price)
@@ -294,8 +310,6 @@ function CheckPage() {
     navigate("/")
   }
   
-  
-
   
   const renderSeatButtons = seatNums.map((num) => {
     return(

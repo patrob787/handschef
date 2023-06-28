@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 function Order({ order, onSelected, onDeselected }) {
   const [ selected, setSelected ] = useState(false)
-  const [ modifiers, setModifiers ] = useState([])
+  // const [ modifiers, setModifiers ] = useState([])
 
 
   function handleOrderClick(e) {
@@ -25,18 +25,22 @@ function Order({ order, onSelected, onDeselected }) {
     setSelected(!selected)
     
   }
+  
 
-  if (order.modifiers > 0) {
-    const mods = order.modifiers.map((m) => {
-      return (
-        <div className={order.staged ? "order-staged" : "order-row"}>
-          <p></p>
-          <p className={selected ? "order-select" : null}>{`${m.message} ${m.name}`}</p>
-          <p></p>
-        </div>
-      )
-    })
-    setModifiers(mods)
+  function renderModifiers() {
+    if (order.modifiers.length > 0) {
+      const mods = order.modifiers.map((m) => {
+        return (
+          <div className={order.staged ? "order-staged" : "order-row"}>
+            <p></p>
+            <p className={selected ? "order-select" : null}>{`${m.message} ${m.name}`}</p>
+            <p></p>
+          </div>
+        )
+      })
+      // setModifiers(mods)
+      return mods
+    }
   }
 
 
@@ -46,7 +50,7 @@ function Order({ order, onSelected, onDeselected }) {
         <p>{Object.keys(order).includes("item") ? order.item.name : order.name}</p>
         <p>${Object.keys(order).includes("item") ? order.item.price : order.price}</p>
       </div>
-      {modifiers}
+      {renderModifiers()}
     </div>
   )
 }

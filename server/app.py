@@ -201,6 +201,31 @@ class OrdersByCheck(Resource):
         
 api.add_resource(OrdersByCheck, "/orders/check/<int:id>")
 
+#MODIFIERS
+class Modifiers(Resource):
+    def get(self):
+        try:
+            return [mod.to_dict() for mod in Modifier.query.all()], 200
+        except:
+            return {"Error": "404 Not Found"}, 404
+        
+    def post(self):
+        try:
+            newMod = Modifier(
+                order_id = request.json["order_id"],
+                sub_item_id = request.json["sub_item_id"],
+                message = request.json["message"]
+            )
+
+            db.session.add(newMod)
+            db.session.commit()
+
+            return newMod.to_dict(), 201
+        except:
+            return {"error": "400 Data not valid"}, 400
+        
+api.add_resource(Modifiers, "/modifiers")
+
 # Authentication Routes
 class SignUp(Resource):
     
