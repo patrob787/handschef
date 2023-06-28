@@ -192,7 +192,7 @@ function CheckPage() {
     setToggleMod(false)
     setItemBtns([])
   }
-
+  console.log(itemsSelected)
   function handleRepeat() {
     if (itemsSelected.length > 0) {
       itemsSelected.forEach((i) => {
@@ -202,7 +202,7 @@ function CheckPage() {
             id: i.item.id,
             name: i.item.name,
             price: i.item.price,
-            seat_number: i.seat_number,
+            seat_number: seat,
             staged: true
           }
           
@@ -213,7 +213,7 @@ function CheckPage() {
             id: i.id,
             name: i.name,
             price: i.price,
-            seat_number: i.seat_number,
+            seat_number: seat,
             staged: true
           }
           

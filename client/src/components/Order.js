@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 
 function Order({ order, onSelected, onDeselected }) {
   const [ selected, setSelected ] = useState(false)
+  const [ modifiers, setModifiers ] = useState([])
 
 
   function handleOrderClick(e) {
@@ -25,17 +26,18 @@ function Order({ order, onSelected, onDeselected }) {
     
   }
 
-  
-  const modifiers = order.modifiers.map((m) => {
-    return (
-      <div className={order.staged ? "order-staged" : "order-row"}>
-        <p></p>
-        <p className={selected ? "order-select" : null}>{`     ${m.message} ${m.name}`}</p>
-        <p></p>
-      </div>
-    )
-  })
-  console.log(modifiers)
+  if (order.modifiers > 0) {
+    const mods = order.modifiers.map((m) => {
+      return (
+        <div className={order.staged ? "order-staged" : "order-row"}>
+          <p></p>
+          <p className={selected ? "order-select" : null}>{`${m.message} ${m.name}`}</p>
+          <p></p>
+        </div>
+      )
+    })
+    setModifiers(mods)
+  }
 
 
   return (
