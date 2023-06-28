@@ -93,13 +93,12 @@ button {
 .nav-btn {
     margin: 5px;
     padding: 1rem;
-    background-color: rgb(164, 164, 244);
+    background-color: #FF66C4;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .nav-btn:hover {
-    background-color: blue;
-    color: aliceblue;
+    background-color: #FFBDE6;
 }
 
 .header-details p {
@@ -159,9 +158,11 @@ button {
     flex-direction: column;
     justify-content: space-between;
     background-color: white;
+    color: #012759;
+    font-size: 1.1em;
     width: 30%;
     height: 80vh;
-    border: 1px solid black;
+    border: 1px solid #FF66C4;
     margin: 10px;
 }
 
@@ -170,12 +171,17 @@ button {
     text-decoration: underline;
 }
 
+.order-total p {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 .menu-int {
     background-color: rgb(164, 164, 244);
     height: 80vh;
     width: 50%;
     margin: 10px;
-    border: 1px solid black;
+    border: 1px solid #FF66C4;
 }
 
 .menu-btn-container {
@@ -190,14 +196,14 @@ button {
 .cat-btn {
     padding: 10px;
     width: 100%;
-    background-color: darksalmon;
+    background-color: #FFBDE6;
     font-weight: bold;
 }
 
 .item-btn {
     width: 200px;
     height: 100px;
-    background-color: crimson;
+    background-color: #FFDDEE;
     font-size: 130%;
     font-weight: bold;
     margin: 3px;
@@ -206,7 +212,7 @@ button {
 .mod-btn {
     width: 200px;
     height: 100px;
-    background-color:darkseagreen;
+    background-color:#FFDDEE;
     font-size: 130%;
     font-weight: bold;
     font-style: italic;
@@ -222,7 +228,7 @@ button {
 
 .option-btn-container button {
     padding: 5px;
-    background-color: darkseagreen;
+    background-color: rgb(211, 81, 107);
     width: 100%;
 }
 
@@ -268,12 +274,12 @@ button {
 }
 
 .seat-neutral {
-    background-color: darksalmon;
+    background-color: #FFDDEE;
 }
 
 .seat-select {
-    background-color: crimson;
-    color: white;
+    background-color: #012759;
+    color: #FFDDEE;
 }
 
 .check-detail {
@@ -324,7 +330,7 @@ button {
 .payment-options button {
     width: 45%;
     height: 20%;
-    background-color: rgb(67, 236, 67);
+    background-color: rgb(67, 236, 202);
 }
 
 .payment-calc {

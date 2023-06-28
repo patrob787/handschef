@@ -3,7 +3,6 @@ import { MyContext } from './MyProvider'
 import Nav from './Nav'
 import Clock from './Clock'
 import "./App.css"
-import pinkLogo from "../logos/2.png"
 import pinkHat from "../logos/8.png"
 
 function Header() {
