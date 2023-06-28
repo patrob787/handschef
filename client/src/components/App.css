@@ -1,13 +1,15 @@
 body {
-    background-color: burlywood;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color:#012759;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     max-height: 100vh;
+    color: #FF66C4;
 }
 
 button {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: bold;
 }
+
 
 .login-container {
     display: flex;
@@ -16,6 +18,15 @@ button {
     justify-content: center;
     height: 100vh;
     width: 100vw;
+}
+
+.logo-container {
+    align-items: center;
+}
+
+.logo-container img {
+    width: 300px;
+    height: 300px;
 }
 
 .login-btn {
@@ -27,7 +38,7 @@ button {
 
 .login-form button {
     padding: 10px;
-    background-color: crimson;
+    background-color: #FFBDE6;
     border-radius: 10%;
 }
 
@@ -46,7 +57,7 @@ button {
 
 .signup button {
     padding: 10px;
-    background-color: crimson;
+    background-color: #FFBDE6;
     border-radius: 10%;
 }
 

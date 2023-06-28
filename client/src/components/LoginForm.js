@@ -27,7 +27,7 @@ function LoginForm({ onLogin }) {
             <label>Employee Number</label><br></br>
             <input type="text" placeholder="Enter Employee Number" value={number} onChange={(e) => setNumber(e.target.value)} /><br></br><br></br>
             <label>Password</label><br></br>
-            <input type="text" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} /><br></br><br></br>
+            <input type="password" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} /><br></br><br></br>
             <button>Login</button>
         </form>
     )

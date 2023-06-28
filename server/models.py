@@ -23,7 +23,7 @@ class User(db.Model, SerializerMixin):
 
     checks = db.relationship("Check", backref="user")
 
-    serialize_rules = ("-checks.user",)
+    serialize_rules = ("-checks.user",) 
 
     def __repr__(self):
         return f"<Employee: {self.emp_code}, Name: {self.first_name} {self.last_name}>"

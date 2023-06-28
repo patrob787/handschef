@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import LoginForm from './LoginForm'
 import SignUpForm from './SignUpForm'
+import pinkLogo from "../logos/2.png"
 
 function Login({ onLogin }) {
     const [ displayLogin, setDisplayLogin ] = useState(true)
@@ -11,6 +12,9 @@ function Login({ onLogin }) {
 
   return (
     <div className="login-container">
+        <div className="logo-container">
+            <img src={pinkLogo} />
+        </div>
         <div className="login-form">
             { displayLogin ? <LoginForm onLogin={onLogin} /> : <SignUpForm onSignup={onDisplayClick} /> }
         </div>
