@@ -35,9 +35,22 @@ function CheckPage() {
       
       if (data.length > 0) {
         const nums = data.map(i => i.seat_number)
-        const numArray = nums.filter((num, i) => {
-          return nums.indexOf(num) === i
-        })
+        const reduced = nums.reduce((a, c) => {
+          if (a > c) {
+            return a
+          } else {
+            return c
+          }
+        }, 0)
+
+        const numArray = []
+        let i = reduced;
+        
+        while (i > -1) {
+          numArray.push(i)
+          i--
+        }
+        
         setSeatNums(numArray.sort())
         
         const prices = data.map(i => i.item.price)
@@ -166,14 +179,18 @@ function CheckPage() {
   
   function addSeatClick() {
     
-    const nextSeat = seatNums.length + 1
+    const nextSeat = seatNums.length
     setSeatNums([...seatNums, nextSeat])
     setSeat(nextSeat)
+    setToggleMod(false)
+    setItemBtns([])
   }
   
   function handleSeatClick(e) {
     
     setSeat(parseInt(e.target.value))
+    setToggleMod(false)
+    setItemBtns([])
   }
 
   function handleRepeat() {

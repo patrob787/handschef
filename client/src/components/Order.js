@@ -29,7 +29,9 @@ function Order({ order, onSelected, onDeselected }) {
   const modifiers = order.modifiers.map((m) => {
     return (
       <div className={order.staged ? "order-staged" : "order-row"}>
-        <p>{`     ${m.message} ${m.name}`}</p>
+        <p></p>
+        <p className={selected ? "order-select" : null}>{`     ${m.message} ${m.name}`}</p>
+        <p></p>
       </div>
     )
   })

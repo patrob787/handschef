@@ -251,7 +251,7 @@ button {
     margin-top: -2%;
     height: 2em;
     align-items: center;
-    font-size: 1em;
+    font-size: .95em;
     font-weight: bold;
     font-style: italic;
     /* color: crimson; */
@@ -259,7 +259,7 @@ button {
 
 
 .order-select {
-    background-color: black;
+    background-color: #012759;
     color: white;
 }
 
