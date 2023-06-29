@@ -142,9 +142,10 @@ function CheckPage() {
 
   //HANDLES SELECTING AND DESELECTING ORDERS ON DOM
   function handleOrdersSelected(item) {
-    console.log(itemsSelected)
+    console.log(item)
     setItemsSelected([...itemsSelected, item])
   }
+  console.log(itemsSelected)
   
   function handleOrdersDeselected(item) {
     setItemsSelected(itemsSelected.filter((i) => {
@@ -203,6 +204,7 @@ function CheckPage() {
             name: i.item.name,
             price: i.item.price,
             seat_number: seat,
+            modifiers: i.modifiers,
             staged: true
           }
           
@@ -214,6 +216,7 @@ function CheckPage() {
             name: i.name,
             price: i.price,
             seat_number: seat,
+            modifiers: i.modifiers,
             staged: true
           }
           
@@ -250,7 +253,8 @@ function CheckPage() {
 
     currentOrders.forEach((order) => {
       if (!Object.keys(order).includes("item")) {
-        
+        order.staged = false;
+
         fetch("/orders", {
           method: "POST",
           headers: {"Content-type": "application/json"},
@@ -263,7 +267,6 @@ function CheckPage() {
         .then(resp => resp.json())
         .then(data => {
           // setReset(!reset)
-          console.log(order)
           if (order.modifiers.length > 0) {
             order.modifiers.forEach((m) => {
               fetch("/modifiers", {
