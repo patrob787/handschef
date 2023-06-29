@@ -1,5 +1,6 @@
 .calc-container {
     height: 60vh;
+    max-width: 450px;
     width: 100%;
     background-color: rgb(164, 164, 244);
     border: 2px solid black;
