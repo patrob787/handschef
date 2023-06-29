@@ -9,8 +9,10 @@ function Home() {
   const { user } = useContext(MyContext)
   const [ userChecks, setUserChecks ] = useState([])
   const [ toggleAll, setToggleAll ] = useState(false)
+  
   const [ popup, setPopup ] = useState(false)
   const [ popupInput, setPopupInput ] = useState("")
+  const [ error, setError ] = useState(null)
 
   const navigate = useNavigate()
 
@@ -68,6 +70,7 @@ function Home() {
   function closePopup() {
     setPopupInput("")
     setPopup(false)
+    setError("")
   }
 
   function enterPopupInput() {
@@ -88,10 +91,12 @@ function Home() {
       .then(resp => resp.json())
       .then(data => {
         updateChecks(data)
+        setPopupInput("")
         navigate(`/check/${data.id}`, { state: data })
       })
     } else {
-      alert("You must enter a valid table number.")
+      // alert("You must enter a valid table number.")
+      setError(<h1>Invalid table number</h1>)
     }
   }
 
@@ -112,6 +117,7 @@ function Home() {
         <Calculator calc={popupInput} onCalc={setPopupInput} />
         <button className="popup-enter" onClick={enterPopupInput}>Enter</button>
       </Popup>
+      <Popup trigger={error} onClose={closePopup}>{error}</Popup>
     </div>
   )
 }
