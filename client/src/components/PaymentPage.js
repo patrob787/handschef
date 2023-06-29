@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import Order from './Order'
 import Calculator from './Calculator'
 
 function PaymentPage() {
@@ -181,8 +180,8 @@ function PaymentPage() {
               <p>${(check.total + check.tax).toFixed(2)}</p>
             </div>
             <div className="total-line">
-              <h2>DUE:</h2>
-              {split.length > 0 ? <h2>${due} / {paymentCount} of {ofPayment}</h2> : <h2>${due}</h2>}
+              <h2>{due >= 0 ? "DUE:" : "CHANGE:"}</h2>
+              {split.length > 0 ? <h2>${due} / {paymentCount} of {ofPayment}</h2> : <h2>${Math.abs(due)}</h2>}
             </div>
           </div>
         </div>
