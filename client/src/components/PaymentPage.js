@@ -16,6 +16,8 @@ function PaymentPage() {
   const [ split, setSplit ] = useState([])
   const [ paymentCount, setPaymentCount ] = useState(0)
   const [ ofPayment, setOfPayment ] = useState(0)
+
+  const [ selectedPayment, setSelectedPayment ] = useState(null)
   
   console.log(check)
 
@@ -60,7 +62,6 @@ function PaymentPage() {
 
     if (split.length > 1) {
       split.shift()
-      console.log(split)
       setDue(split[0])
       setPaymentCount(paymentCount + 1)
     } else {
@@ -129,6 +130,14 @@ function PaymentPage() {
       alert(`There is still $${due} remaining on this check`)
     }
   }
+
+  function handleVoidPayment() {
+    const filteredPayments = payments.filter((p) => {
+      return p.card !== selectedPayment.card
+    })
+    setDue(parseFloat(due) + parseFloat(selectedPayment.charge))
+    setPayments(filteredPayments)
+  }
   
   function handleBack() {
     navigate(`/check/${check.id}`, { state: check })
@@ -142,10 +151,40 @@ function PaymentPage() {
     </div>
     )
   })
+
+  function onSelectPayment(e) {
+    let selectPayment;
+    
+    if (!selectedPayment) {
+      selectPayment = payments.find((p) => {
+        return e.target.innerText.includes(p.card) || e.target.innerText.includes(p.charge)
+      })
+      setSelectedPayment(selectPayment)
+    } else {
+      selectPayment = selectedPayment
+      setSelectedPayment(null)
+    }
+    
+    let node;
+    
+    if (e.target.nodeName === "P") {
+      
+      node = e.target.parentNode
+      
+      selectedPayment !== selectPayment ? node.classList.add("order-select") : node.classList.remove("order-select")
+      
+    } else {
+      
+      node = e.target
+      
+      selectedPayment !== selectPayment ? node.classList.add("order-select") : node.classList.remove("order-select")
+      
+    }
+  }
  
   const renderPayments = payments.map((p) => {
     return(
-      <div class="payment">
+      <div class="payment" onClick={onSelectPayment}>
         <p>Authorized {p.card}</p>
         <p>${parseFloat(p.charge).toFixed(2)}</p>
       </div>
@@ -191,8 +230,9 @@ function PaymentPage() {
           <button onClick={handleCash}>Cash</button>
           <button onClick={handleSplitPay}>Split Payment</button>
           <button>Split by Seat</button>
-          <button>Apply Discount</button>
           <button>Add Gratuity</button>
+          <button>Cash Tip</button>
+          <button>Apply Discount</button>
         </div>
         
         <div className="payment-calc">
@@ -202,7 +242,7 @@ function PaymentPage() {
 
       <div className="option-btn-container">
         <button onClick={handleCloseCheck}>Close Check</button>
-        <button>Void Payment</button>
+        <button onClick={handleVoidPayment}>Void Payment</button>
         <button>Edit Checks</button>
         <button>Print Check</button>
         <button>Print Auth</button>

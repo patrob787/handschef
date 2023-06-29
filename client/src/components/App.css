@@ -296,6 +296,7 @@ button {
 
 .total-detail {
     border-top: 2px solid black;
+    overflow-y: auto;
 }
 
 .total-line {
