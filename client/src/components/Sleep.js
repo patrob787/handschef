@@ -16,6 +16,7 @@ function Sleep({ user, onSleep }) {
             onSleep()
         } else {
             setError(<h1>Invalid Employee Number</h1>)
+            setNumber("")
         }
     }
 
