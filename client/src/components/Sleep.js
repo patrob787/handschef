@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import Calculator from './Calculator'
 import pinkLogo from "../logos/2.png"
+import Popup from './Popup'
 
 
 function Sleep({ user, onSleep }) {
     
     const [ number, setNumber ] = useState("")
+    const [ error, setError ] = useState(null)
   
     function handleSubmit(e) {
         e.preventDefault()
@@ -13,12 +15,16 @@ function Sleep({ user, onSleep }) {
         if (number === user.emp_code) {
             onSleep()
         } else {
-            alert("Employee number Invalid")
+            setError(<h1>Invalid Employee Number</h1>)
         }
     }
 
     function handleCalc(value) {
         setNumber(value)
+    }
+
+    function closePopup(){
+        setError(null)
     }
 
     return (
@@ -28,6 +34,9 @@ function Sleep({ user, onSleep }) {
             <Calculator calc={number} onCalc={handleCalc}/>
             <button className="login-btn" onClick={handleSubmit}>Enter</button>
         </div>
+        <Popup trigger={error} onClose={closePopup}>
+            {error}
+        </Popup>
     </div>
   )
 }
