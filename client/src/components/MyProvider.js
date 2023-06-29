@@ -22,6 +22,7 @@ function MyProvider({ children }) {
 
     function onLogin(user) {
         setUser(user)
+        navigate("/")
     }
 
     function onLogout() {

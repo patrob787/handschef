@@ -26,17 +26,28 @@ function Order({ order, onSelected, onDeselected }) {
     
   }
   
-
+  
   function renderModifiers() {
     if (order.modifiers.length > 0) {
       const mods = order.modifiers.map((m) => {
-        return (
-          <div className={order.staged ? "order-staged" : "order-row"}>
-            <p></p>
-            <p className={selected ? "order-select" : null}>{`${m.message} ${m.name}`}</p>
-            <p></p>
-          </div>
-        )
+        if (Object.keys(m).includes("sub_item")) {
+          return (
+            <div className={order.staged ? "order-staged" : "order-row"}>
+              <p></p>
+              <p className={selected ? "order-select" : null}>{`${m.message} ${m.sub_item.name}`}</p>
+              <p></p>
+            </div>
+          )
+        } else{
+          return (
+            <div className={order.staged ? "order-staged" : "order-row"}>
+              <p></p>
+              <p className={selected ? "order-select" : null}>{`${m.message} ${m.name}`}</p>
+              <p></p>
+            </div>
+          )
+        }
+        
       })
       // setModifiers(mods)
       return mods

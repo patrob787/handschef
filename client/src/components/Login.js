@@ -13,7 +13,7 @@ function Login({ onLogin }) {
   return (
     <div className="login-container">
         <div className="logo-container">
-            <img src={pinkLogo} />
+            <img src={pinkLogo} alt="HandsChef!" />
         </div>
         <div className="login-form">
             { displayLogin ? <LoginForm onLogin={onLogin} /> : <SignUpForm onSignup={onDisplayClick} /> }
