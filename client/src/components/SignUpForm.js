@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Popup from './Popup'
 
 function SignUpForm({ onSignup }) {
     const [ first, setFirst ] = useState("")
@@ -9,18 +10,20 @@ function SignUpForm({ onSignup }) {
     const [ passwordConfirm, setPasswordConfirm ] = useState("")
     const [ signUpOk, setSignUpOk ] = useState(false)
 
+    const [ error, setError ] = useState(null)
+
 
     function handleSubmit(e) {
         e.preventDefault()
         
         if (empNum.length !== 6 || !/^\d+$/.test(empNum)) {
-            alert("Employee number must be 6 digits in length")
+            setError("Employee number must be 6 digits in length")
         } else if (empNum !== empConfirm) {
-            alert("Employee Number values must match!")
+            setError("Employee Number values must match!")
         } else if (6 > password.length > 10) {
-            alert("Password must be between 6 and 10 characters")
+            setError("Password must be between 6 and 10 characters")
         } else if (password !== passwordConfirm) {
-            alert("Password values must match!")
+            setError("Password values must match!")
         } else {
             fetch("/signup", {
                 method: "POST",
@@ -43,67 +46,77 @@ function SignUpForm({ onSignup }) {
                     }, 2000)
                     
                 } else {
-                    alert("Unable to signup.")
+                    setError("Unable to signup.")
                 }
             })
         }
     }
+
+    function closePopup(){
+        setError(null)
+    }
     
     return (
-        <form onSubmit={handleSubmit}>
-            <label>First Name</label><br></br>
-            <input 
-                type="text" 
-                placeholder='first name' 
-                value={first} 
-                onChange={(e) => {setFirst(e.target.value)}} 
-            /><br></br><br></br>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <label>First Name</label><br></br>
+                <input 
+                    type="text" 
+                    placeholder='first name' 
+                    value={first} 
+                    onChange={(e) => {setFirst(e.target.value)}} 
+                /><br></br><br></br>
 
-            <label>Last Name</label><br></br>
-            <input 
-                type="text" 
-                placeholder='last name' 
-                value={last} 
-                onChange={(e) => {setLast(e.target.value)}} 
-            /><br></br><br></br>
+                <label>Last Name</label><br></br>
+                <input 
+                    type="text" 
+                    placeholder='last name' 
+                    value={last} 
+                    onChange={(e) => {setLast(e.target.value)}} 
+                /><br></br><br></br>
 
-            <label>Set Employee Number</label><br></br>
-            <input 
-                type="text" 
-                placeholder='Enter a six digit number' 
-                value={empNum} 
-                onChange={(e) => {setEmpNum(e.target.value)}} 
-            /><br></br><br></br>
+                <label>Set Employee Number</label><br></br>
+                <input 
+                    type="text" 
+                    placeholder='Enter a six digit number' 
+                    value={empNum} 
+                    onChange={(e) => {setEmpNum(e.target.value)}} 
+                /><br></br><br></br>
 
-            <label>Confirm Employee Number</label><br></br>
-            <input 
-                type="text" 
-                placeholder='Re-Enter same six digit number' 
-                value={empConfirm} 
-                onChange={(e) => {setEmpConfirm(e.target.value)}} 
-            /><br></br><br></br>
+                <label>Confirm Employee Number</label><br></br>
+                <input 
+                    type="text" 
+                    placeholder='Re-Enter same six digit number' 
+                    value={empConfirm} 
+                    onChange={(e) => {setEmpConfirm(e.target.value)}} 
+                /><br></br><br></br>
 
-            <label>Set Password</label><br></br>
-            <input 
-                type="password" 
-                placeholder='Enter Password' 
-                value={password} 
-                onChange={(e) => {setPassword(e.target.value)}} 
-            /><br></br><br></br>
+                <label>Set Password</label><br></br>
+                <input 
+                    type="password" 
+                    placeholder='Enter Password' 
+                    value={password} 
+                    onChange={(e) => {setPassword(e.target.value)}} 
+                /><br></br><br></br>
 
-            <label>Confirm Password</label><br></br>
-            <input 
-                type="password" 
-                placeholder='Re-enter Password' 
-                value={passwordConfirm} 
-                onChange={(e) => {setPasswordConfirm(e.target.value)}}
-            /><br></br><br></br>
+                <label>Confirm Password</label><br></br>
+                <input 
+                    type="password" 
+                    placeholder='Re-enter Password' 
+                    value={passwordConfirm} 
+                    onChange={(e) => {setPasswordConfirm(e.target.value)}}
+                /><br></br><br></br>
 
-            <button>Submit</button><br></br><br></br>
+                <button>Submit</button><br></br><br></br>
 
-            {signUpOk ? <p>Sign Up Successful!  Redirecting to Login...</p> : null}
+                {signUpOk ? <p>Sign Up Successful!  Redirecting to Login...</p> : null}
 
-        </form>
+            </form>
+
+            <Popup trigger={error} onClose={closePopup}>
+                <h1>{error}</h1>
+            </Popup>
+        </div>
     )
 }
 

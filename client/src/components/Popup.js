@@ -6,7 +6,7 @@ function Popup(props) {
     <div className="popup">
         <div className="popup-inner">
             {props.children}
-            <button className="popup-close" onClick={() => props.onClose()}>Cancel</button>
+            <button className="popup-close" onClick={() => props.onClose()}>X</button>
         </div>
     </div>
   ) : null
