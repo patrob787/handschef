@@ -4,7 +4,6 @@ import Order from './Order'
 import Calculator from './Calculator'
 
 function PaymentPage() {
-
   const location = useLocation()
   const navigate = useNavigate()
   
@@ -19,7 +18,17 @@ function PaymentPage() {
   const [ paymentCount, setPaymentCount ] = useState(0)
   const [ ofPayment, setOfPayment ] = useState(0)
   
-  console.log(due, split, paymentCount, ofPayment)
+  console.log(check)
+
+  useEffect(() => {
+    fetch(`/checks/${check.id}`)
+    .then(resp => resp.json())
+    .then(data => {
+      setCheck(data)
+      setDue((data.total + data.tax).toFixed(2))
+      setOrders(data.orders)
+    })
+  },[])
 
   function handleCalcValue(value) {
     setCalcValue(value)
@@ -127,7 +136,12 @@ function PaymentPage() {
   }
 
   const renderOrders = orders.map((o) => {
-    return <Order order={o} />
+    return (
+    <div className="order-row">
+      <p>{o.item.name}</p>
+      <p>${o.item.price}</p>
+    </div>
+    )
   })
  
   const renderPayments = payments.map((p) => {
@@ -190,8 +204,6 @@ function PaymentPage() {
       <div className="option-btn-container">
         <button onClick={handleCloseCheck}>Close Check</button>
         <button>Void Payment</button>
-        <button>?</button>
-        <button>?</button>
         <button>Edit Checks</button>
         <button>Print Check</button>
         <button>Print Auth</button>

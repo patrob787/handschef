@@ -285,6 +285,8 @@ function CheckPage() {
         prices.push(order.price)
 
       }
+      const sum = prices.reduce((a, c) => a + c, 0)
+      setCheckTotal(checkTotal + sum)
     })
 
     if (prices.length > 0) {
