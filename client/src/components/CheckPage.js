@@ -277,7 +277,7 @@ function CheckPage() {
                 })
               })
               .then(resp => resp.json())
-              .then(data => console.log(data))
+              .then(data => setReset(!reset))
             })
           }
         })
