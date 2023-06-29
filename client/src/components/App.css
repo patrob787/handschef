@@ -59,10 +59,6 @@ button {
     border-radius: 10%;
 }
 
-/* .header-master {
-    display: flex;
-} */
-
 #header-logo {
     height: 150px;
     margin-left: 10px;
@@ -283,7 +279,7 @@ button {
 
 .check-detail {
     overflow-y: auto;
-    overflow-x: hidden;
+    max-height: 60vh;
     margin: 10px;
 }
 

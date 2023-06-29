@@ -8,7 +8,6 @@ function CheckPage() {
   const navigate = useNavigate()
   
   const [ check, setCheck ] = useState(location.state)
-  // const [ menu, setMenu ] = useState([])
   const [ currentOrders, setCurrentOrders ] = useState([])
   const [ itemsSelected, setItemsSelected ] = useState([])
   
@@ -33,6 +32,8 @@ function CheckPage() {
     .then(data => {
       setCurrentOrders(data)
       
+      // This code finds the highest seat number and then populate a number array starting at 0 up to the highest number.
+      // This is to ensure that "All" as well as any inbetween seats stay on the check
       if (data.length > 0) {
         const nums = data.map(i => i.seat_number)
         const reduced = nums.reduce((a, c) => {
@@ -68,7 +69,7 @@ function CheckPage() {
     })
     
     setItemBtns(catItems)
-    setToggleMod(false)
+   setToggleMod(false)
   }
   
   const categories = Array.from(new Set(allItems.map(item => item.category)))
@@ -106,8 +107,6 @@ function CheckPage() {
       setStagedItem(itemCopy)
     
     } else {
-      console.log(stagedItem)
-      
       const parentItem = allItems.find(i => i.id === stagedItem.id)
       const mod = parentItem.item_mods.find(m => m.sub_item.button_name === e.target.value)
       
@@ -117,7 +116,6 @@ function CheckPage() {
         message: modMessage
       }
       stagedItem.modifiers.push(modifier)
-      console.log(stagedItem)
       const modifiedOrders = currentOrders.slice(0, -1)
       modifiedOrders.push(stagedItem)
       
