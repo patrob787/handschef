@@ -8,30 +8,52 @@ function CheckPage() {
   const navigate = useNavigate()
   
   const [ check, setCheck ] = useState(location.state)
-  const [ menu, setMenu ] = useState([])
   const [ currentOrders, setCurrentOrders ] = useState([])
   const [ itemsSelected, setItemsSelected ] = useState([])
+  
   const [ seat, setSeat ] = useState(1)
-  const [ seatNums, setSeatNums ] = useState([1])
+  const [ seatNums, setSeatNums ] = useState([0, 1])
+  
   const [ reset, setReset ] = useState(false)
   const [ checkTotal, setCheckTotal ] = useState(0)
+
+  const [ itemBtns, setItemBtns ] = useState([])
+  const [ toggleMod, setToggleMod ] = useState(false)
+  const [ stagedItem, setStagedItem ] = useState({})
+  const [ modMessage, setModMessage ] = useState("")
   
   const { allItems } = useContext(MyContext)
-  console.log(check)
   
+  console.log(currentOrders)
+
   useEffect(() => {
     fetch(`/orders/check/${check.id}`)
     .then(resp => resp.json())
     .then(data => {
       setCurrentOrders(data)
       
+      // This code finds the highest seat number and then populate a number array starting at 0 up to the highest number.
+      // This is to ensure that "All" as well as any inbetween seats stay on the check
       if (data.length > 0) {
         const nums = data.map(i => i.seat_number)
-        const numArray = nums.filter((num, i) => {
-          return nums.indexOf(num) === i
-        })
-        setSeatNums(numArray.sort())
+        const reduced = nums.reduce((a, c) => {
+          if (a > c) {
+            return a
+          } else {
+            return c
+          }
+        }, 0)
 
+        const numArray = []
+        let i = reduced;
+        
+        while (i > -1) {
+          numArray.push(i)
+          i--
+        }
+        
+        setSeatNums(numArray.sort())
+        
         const prices = data.map(i => i.item.price)
         const total = prices.reduce((a, c) => a + c, 0)
         
@@ -40,32 +62,88 @@ function CheckPage() {
     })
   }, [reset])
   
+  // HANDLES CATEGORY BUTTON RENDERS AND CLICKS
   function handleCatClick(e) {
     const catItems = allItems.filter((i) => {
       return i.category === e.target.value
     })
-    setMenu(catItems)
+    
+    setItemBtns(catItems)
+   setToggleMod(false)
   }
-
+  
+  const categories = Array.from(new Set(allItems.map(item => item.category)))
+  
+  const catBtns = categories.map((cat) => {
+    return <button className="cat-btn" value={cat} onClick={handleCatClick}>{cat}</button>
+  })
+  
+  // HANDLES ITEM CLICKS AND BUTTONS
   function handleItemClick(e) {
-    const item = allItems.find(i => i.button_name === e.target.value)
+    if (!toggleMod) {
+      const item = allItems.find(i => i.button_name === e.target.value)
+      
+      if (item.item_mods.length > 0) {
+        let subItems = []
+        
+        item.item_mods.forEach((sub) => {
+          subItems.push(sub.sub_item)
+        })
 
-    const itemCopy = {
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      seat_number: seat,
-      staged: true
+        setItemBtns(subItems)
+        setToggleMod(true)
+      }
+
+      const itemCopy = {
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        seat_number: seat,
+        modifiers: [],
+        staged: true
+      }
+      
+      setCurrentOrders([...currentOrders, itemCopy])
+      setStagedItem(itemCopy)
+    
+    } else {
+      const parentItem = allItems.find(i => i.id === stagedItem.id)
+      const mod = parentItem.item_mods.find(m => m.sub_item.button_name === e.target.value)
+      
+      const modifier = {
+        id: mod.sub_item.id,
+        name: mod.sub_item.name,
+        message: modMessage
+      }
+      stagedItem.modifiers.push(modifier)
+      const modifiedOrders = currentOrders.slice(0, -1)
+      modifiedOrders.push(stagedItem)
+      
+      setCurrentOrders(modifiedOrders)
     }
     
-
-    setCurrentOrders([...currentOrders, itemCopy])
   }
+  
+  const itemButtons = itemBtns.map((i) => {
+    return <button className="item-btn" value={i.button_name} onClick={handleItemClick}>{i.button_name}</button>
+  })
+  
+  // HANDLES MOD BUTTONS AND MOD CLICK
+  function handleModClick(e) {
+    setModMessage(e.target.value)
+  }
+  const modOptions = ["No", "On Side", "Extra"]
 
+  const modButtons = modOptions.map((o) => {
+    return <button value={o} className="mod-btn" onClick={handleModClick}>{o}</button>
+  })
+
+  //HANDLES SELECTING AND DESELECTING ORDERS ON DOM
   function handleOrdersSelected(item) {
-    console.log(itemsSelected)
+    console.log(item)
     setItemsSelected([...itemsSelected, item])
   }
+  console.log(itemsSelected)
   
   function handleOrdersDeselected(item) {
     setItemsSelected(itemsSelected.filter((i) => {
@@ -100,16 +178,20 @@ function CheckPage() {
   
   function addSeatClick() {
     
-    const nextSeat = seatNums.length + 1
+    const nextSeat = seatNums.length
     setSeatNums([...seatNums, nextSeat])
     setSeat(nextSeat)
+    setToggleMod(false)
+    setItemBtns([])
   }
   
   function handleSeatClick(e) {
     
     setSeat(parseInt(e.target.value))
+    setToggleMod(false)
+    setItemBtns([])
   }
-
+  
   function handleRepeat() {
     if (itemsSelected.length > 0) {
       itemsSelected.forEach((i) => {
@@ -119,7 +201,8 @@ function CheckPage() {
             id: i.item.id,
             name: i.item.name,
             price: i.item.price,
-            seat_number: i.seat_number,
+            seat_number: seat,
+            modifiers: i.modifiers,
             staged: true
           }
           
@@ -130,7 +213,8 @@ function CheckPage() {
             id: i.id,
             name: i.name,
             price: i.price,
-            seat_number: i.seat_number,
+            seat_number: seat,
+            modifiers: i.modifiers,
             staged: true
           }
           
@@ -152,6 +236,8 @@ function CheckPage() {
       }
     }))
     setItemsSelected([])
+    setItemBtns([])
+    setToggleMod(false)
   }
   
   function handlePrintClick() {
@@ -165,7 +251,8 @@ function CheckPage() {
 
     currentOrders.forEach((order) => {
       if (!Object.keys(order).includes("item")) {
-        
+        order.staged = false;
+
         fetch("/orders", {
           method: "POST",
           headers: {"Content-type": "application/json"},
@@ -177,12 +264,29 @@ function CheckPage() {
         })
         .then(resp => resp.json())
         .then(data => {
-          setReset(!reset)
+          // setReset(!reset)
+          if (order.modifiers.length > 0) {
+            order.modifiers.forEach((m) => {
+              fetch("/modifiers", {
+                method: "POST",
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify({
+                  order_id: data.id,
+                  sub_item_id: m.id,
+                  message: m.message
+                })
+              })
+              .then(resp => resp.json())
+              .then(data => setReset(!reset))
+            })
+          }
         })
 
         prices.push(order.price)
 
       }
+      const sum = prices.reduce((a, c) => a + c, 0)
+      setCheckTotal(checkTotal + sum)
     })
 
     if (prices.length > 0) {
@@ -200,6 +304,8 @@ function CheckPage() {
       .then(resp => resp.json())
       .then(data => setCheck(data))
     }
+    setItemBtns([])
+    setToggleMod(false)
   }
   
   function handleExitClick() {
@@ -207,23 +313,13 @@ function CheckPage() {
     navigate("/")
   }
   
-  const categories = Array.from(new Set(allItems.map(item => item.category)))
-  
-  const catBtns = categories.map((cat) => {
-    return <button className="cat-btn" value={cat} onClick={handleCatClick}>{cat}</button>
-  })
-  
-  const itemBtns = menu.map((item) => {
-    return <button className="item-btn" value={item.button_name} onClick={handleItemClick}>{item.button_name}</button>
-  }) 
   
   const renderSeatButtons = seatNums.map((num) => {
     return(
-      <button value={num} onClick={handleSeatClick} className={seat === num ? "seat-select" : "seat-neutral"}>Seat {num}</button>
+      <button value={num} onClick={handleSeatClick} className={seat === num ? "seat-select" : "seat-neutral"}>{num === 0 ? "All" : `Seat ${num}`}</button>
       )
     })
     
-  
   const renderSeats = seatNums.map((num) => {
     return (
       <Seat 
@@ -236,7 +332,8 @@ function CheckPage() {
     )
   })
   
-  
+  // COMPONENT IS DOWN HERE!
+
   return (
     <div className="check-page">
       <div className="order-page">
@@ -246,7 +343,6 @@ function CheckPage() {
             <h3>Table {check.table_number}</h3>
             
             <div className="seats">
-              {/* <button value={"All"} onClick={handleSeatClick}>All</button> */}
               {renderSeatButtons}
             </div>
             
@@ -262,7 +358,10 @@ function CheckPage() {
         </div>
         
         <div className="menu-int">
-          {itemBtns}
+          <div>
+            { toggleMod ? modButtons : null }
+          </div>
+          {itemButtons}
         </div>
         
         <div className="menu-btn-container">

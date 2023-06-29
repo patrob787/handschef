@@ -85,7 +85,7 @@ function SignUpForm({ onSignup }) {
 
             <label>Set Password</label><br></br>
             <input 
-                type="text" 
+                type="password" 
                 placeholder='Enter Password' 
                 value={password} 
                 onChange={(e) => {setPassword(e.target.value)}} 
@@ -93,7 +93,7 @@ function SignUpForm({ onSignup }) {
 
             <label>Confirm Password</label><br></br>
             <input 
-                type="text" 
+                type="password" 
                 placeholder='Re-enter Password' 
                 value={passwordConfirm} 
                 onChange={(e) => {setPasswordConfirm(e.target.value)}}

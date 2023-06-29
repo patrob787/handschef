@@ -1,6 +1,7 @@
 body {
-    background-color: burlywood;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color:#012759;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: #FF66C4;
 }
 
 button {
@@ -17,16 +18,25 @@ button {
     width: 100vw;
 }
 
+.logo-container {
+    align-items: center;
+}
+
+.logo-container img {
+    width: 300px;
+    height: 300px;
+}
+
 .login-btn {
     width: 100%;
     height: 10vh;
-    background-color: darkseagreen;
+    background-color: rgb(164, 164, 244);
     /* border: 2px solid black; */
 }
 
 .login-form button {
     padding: 10px;
-    background-color: crimson;
+    background-color: #FFBDE6;
     border-radius: 10%;
 }
 
@@ -45,14 +55,24 @@ button {
 
 .signup button {
     padding: 10px;
-    background-color: crimson;
+    background-color: #FFBDE6;
     border-radius: 10%;
+}
+
+#header-logo {
+    height: 150px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.header-details {
+    float: right;
 }
 
 .header-container {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    margin-top: 20px;
     font-size: 1em;
 }
 
@@ -68,13 +88,12 @@ button {
 .nav-btn {
     margin: 5px;
     padding: 1rem;
-    background-color: rgb(164, 164, 244);
+    background-color: #FF66C4;
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
 .nav-btn:hover {
-    background-color: blue;
-    color: aliceblue;
+    background-color: #FFBDE6;
 }
 
 .header-details p {
@@ -96,7 +115,8 @@ button {
 .option-container button {
     width: 47%;
     margin: 1px;
-    background-color: darksalmon;
+    background-color: #FFBDE6;
+    font-size: 1em;
 }
 
 .check-container {
@@ -104,7 +124,8 @@ button {
     height: 75vh;
     background-color: rgb(164, 164, 244);
     margin: 0px;
-    border: 3px solid black;
+    border: 3px solid #FF66C4;
+    border-radius: 1%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -112,7 +133,8 @@ button {
 }
 
 .check-card {
-    background-color: rgba(245, 245, 220, .75);
+    background-color: #FFDDEE;
+    color: black;
     height: 200px;
     width: 200px;
     font-size: 1.1rem;
@@ -131,9 +153,11 @@ button {
     flex-direction: column;
     justify-content: space-between;
     background-color: white;
+    color: #012759;
+    font-size: 1.1em;
     width: 30%;
     height: 80vh;
-    border: 1px solid black;
+    border: 1px solid #FF66C4;
     margin: 10px;
 }
 
@@ -142,12 +166,17 @@ button {
     text-decoration: underline;
 }
 
+.order-total p {
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 .menu-int {
     background-color: rgb(164, 164, 244);
     height: 80vh;
     width: 50%;
     margin: 10px;
-    border: 1px solid black;
+    border: 1px solid #FF66C4;
 }
 
 .menu-btn-container {
@@ -162,16 +191,26 @@ button {
 .cat-btn {
     padding: 10px;
     width: 100%;
-    background-color: darksalmon;
+    background-color: #FFBDE6;
     font-weight: bold;
 }
 
 .item-btn {
     width: 200px;
     height: 100px;
-    background-color: crimson;
+    background-color: #FFDDEE;
     font-size: 130%;
     font-weight: bold;
+    margin: 3px;
+}
+
+.mod-btn {
+    width: 200px;
+    height: 100px;
+    background-color:rgb(67, 236, 202);
+    font-size: 130%;
+    font-weight: bold;
+    font-style: italic;
     margin: 3px;
 }
 
@@ -184,7 +223,7 @@ button {
 
 .option-btn-container button {
     padding: 5px;
-    background-color: darkseagreen;
+    background-color: rgb(211, 81, 107);
     width: 100%;
 }
 
@@ -207,7 +246,7 @@ button {
     margin-top: -2%;
     height: 2em;
     align-items: center;
-    font-size: 1em;
+    font-size: .95em;
     font-weight: bold;
     font-style: italic;
     /* color: crimson; */
@@ -215,7 +254,7 @@ button {
 
 
 .order-select {
-    background-color: black;
+    background-color: #012759;
     color: white;
 }
 
@@ -230,17 +269,17 @@ button {
 }
 
 .seat-neutral {
-    background-color: darksalmon;
+    background-color: #FFDDEE;
 }
 
 .seat-select {
-    background-color: crimson;
-    color: white;
+    background-color: #012759;
+    color: #FFDDEE;
 }
 
 .check-detail {
     overflow-y: auto;
-    overflow-x: hidden;
+    max-height: 60vh;
     margin: 10px;
 }
 
@@ -257,6 +296,7 @@ button {
 
 .total-detail {
     border-top: 2px solid black;
+    overflow-y: auto;
 }
 
 .total-line {
@@ -286,7 +326,7 @@ button {
 .payment-options button {
     width: 45%;
     height: 20%;
-    background-color: rgb(67, 236, 67);
+    background-color: rgb(67, 236, 202);
 }
 
 .payment-calc {

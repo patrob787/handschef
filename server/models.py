@@ -23,7 +23,7 @@ class User(db.Model, SerializerMixin):
 
     checks = db.relationship("Check", backref="user")
 
-    serialize_rules = ("-checks.user",)
+    serialize_rules = ("-checks.user",) 
 
     def __repr__(self):
         return f"<Employee: {self.emp_code}, Name: {self.first_name} {self.last_name}>"
@@ -49,7 +49,7 @@ class Item(db.Model, SerializerMixin):
     orders = db.relationship("Order", backref="item")
     item_mods = db.relationship("ItemMod", backref="item")
 
-    serialize_rules = ("-orders.item", "-item_mods.item")
+    serialize_rules = ("-orders.item", "-item_mods.item", "-item_mods.sub_item.modifiers")
 
     def __repr__(self):
         return f"<Item: {self.name}, Price: {self.price}, Category: {self.category}>"
@@ -114,7 +114,7 @@ class Order(db.Model, SerializerMixin):
 
     modifiers = db.relationship("Modifier", backref="order")
 
-    serialize_rules = ("-item.orders", "-check.orders", "-modifiers.order")
+    serialize_rules = ("-item.orders", "-check.orders", "-modifiers.order", "-modifiers.sub_item.item_mods")
 
     def __repr__(self):
         return f"<Order #: {self.id}, Check #: {self.check_id}, Item: {self.item_id}>"

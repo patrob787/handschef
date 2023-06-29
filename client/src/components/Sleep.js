@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Calculator from './Calculator'
+import pinkLogo from "../logos/2.png"
 
 
 function Sleep({ user, onSleep }) {
@@ -22,8 +23,8 @@ function Sleep({ user, onSleep }) {
 
     return (
     <div className="login-container">
-        <h1>Enter Employee Number</h1>
         <div>
+            <h1>Enter Employee Number</h1>
             <Calculator calc={number} onCalc={handleCalc}/>
             <button className="login-btn" onClick={handleSubmit}>Enter</button>
         </div>
