@@ -239,8 +239,6 @@ class SignUp(Resource):
                     emp_code = request.json['emp_code']
                 )
             
-            # print(new_user)
-            
             db.session.add(new_user)
             db.session.commit()
 
@@ -276,7 +274,6 @@ class Login(Resource):
         password = request.json["password"]
 
         user = User.query.filter(User.emp_code == number).first()
-        # print(user)
 
         if user:
             if user.password == password:
